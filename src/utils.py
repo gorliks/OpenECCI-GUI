@@ -31,6 +31,15 @@ def load_image(file_path):
     return image
 
 
+def normalise(image):
+    norm = np.linalg.norm(image)
+    image_norm = image / norm  # normalized matrix
+    return image_norm
+
+def calculate_difference(image1, image2):
+    return normalise(image1) - normalise(image2)
+
+
 def current_timestamp():
     return datetime.datetime.fromtimestamp(time.time()).strftime("%y%m%d.%H%M%S")
 
