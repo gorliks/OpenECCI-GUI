@@ -57,7 +57,7 @@ class ECP():
         if pc_z is not None: self.pc_z = pc_z
         if pixel_size is not None: self.pixel_size = pixel_size
         if binning is not None: self.binning = binning
-        if tilt is not None: self.binning = binning
+        if tilt is not None: self.tilt = tilt
         if sample_tilt is not None: self.sample_tilt = sample_tilt
         if projection is not None: self.projection = projection
         if hemispheres is not None: self.hemispheres = hemispheres
@@ -113,7 +113,6 @@ class ECP():
 
     def calculate_ecp_pattern(self, tilt_x = 0, tilt_y = 0):
         self.create_ecp_detector()
-        print(tilt_y, tilt_x)
         tilt_y = [0, -tilt_y, 0]
         tilt_x = [-90, -tilt_x, 90]
         st_tilt_y = quaternion.Rotation.from_euler(np.deg2rad([tilt_y]))
@@ -126,8 +125,7 @@ class ECP():
                                                     detector=self.ecp_detector,
                                                     energy=self.energy,
                                                     compute=True)
-                print(f'tilt_x = {tilt_x}, tilt_y = {tilt_y}, {st_tilt_x}, {st_tilt_y}')
-                print(self.point_Eulers)
+
                 return np.squeeze(self.ecp_pattern.data)
 
         else:

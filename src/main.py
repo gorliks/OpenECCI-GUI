@@ -35,18 +35,23 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.measured_ECP_stored = None
         self.simulated_ECP = None
         self.simulated_ECP_stored = None
+        self.difference = None
+        self._abort_clicked_status = False
+        self.calibrated_tilt_x = 0
+        self.calibrated_tilt_y = 0
 
         self.ecp_reference = ECP.ECP()
 
 
-        self.calibration_tilt_x = 0.0
-        self.calibration_tilt_y = 0.0
+        self.tilt_x = 0.0
+        self.tilt_y = 0.0
 
         self.horizontalScrollBar_tilt_y.setValue(50)
         self.horizontalScrollBar_tilt_x.setValue(50)
         self.doubleSpinBox_tilt_y.setValue(0)
         self.doubleSpinBox_tilt_x.setValue(0)
         self.comboBox_angle_step.setCurrentText('0.1')
+        self.comboBox_angle_step_automatic.setCurrentText('0.1')
         number_of_steps = 2*self.doubleSpinBox_angle_range.value() / float(self.comboBox_angle_step.currentText())
         self.horizontalScrollBar_tilt_x.setMaximum(int(number_of_steps))
         self.horizontalScrollBar_tilt_y.setMaximum(int(number_of_steps))
@@ -62,6 +67,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
     def setup_connections(self):
         self.label_messages.setText('Starting up...')
+        self.pushButton_abort_automatic_calibration.clicked.connect(lambda: self._abort_clicked())
         #
         self.horizontalScrollBar_tilt_y.valueChanged.connect(lambda: self._set_tilt(angle_slider=2))
         self.horizontalScrollBar_tilt_x.valueChanged.connect(lambda: self._set_tilt(angle_slider=1))
@@ -80,7 +86,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_load_ECP_master_pattern.clicked.connect(lambda: self._load_ref_master_pattern())
         self.pushButton_set_ref_ECP_detector.clicked.connect(lambda: self._update_ecp_ref_settings())
         self.pushButton_load_ref_ctf_file.clicked.connect(lambda: self._load_ctf_file())
-        self.pushButton_ref_ECP_display.clicked.connect(lambda: self.display_simulated_ECP_pattern())
+        self.pushButton_ref_ECP_display.clicked.connect(lambda: self.calculate_simulated_ECP_pattern())
+        self.pushButton_run_automatic_calibration.clicked.connect(lambda: self.run_automatic_calibration())
 
 
     def initialise_image_frames(self):
@@ -220,23 +227,75 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.label_messages.setText(str(output))
 
 
-    def display_simulated_ECP_pattern(self):
+    def calculate_simulated_ECP_pattern(self, plot=True):
         try:
             self.simulated_ECP = \
-                self.ecp_reference.calculate_ecp_pattern(tilt_x=self.calibration_tilt_x,
-                                                         tilt_y=self.calibration_tilt_y)
+                self.ecp_reference.calculate_ecp_pattern(tilt_x=self.tilt_x,
+                                                         tilt_y=self.tilt_y)
             self.update_display(image=self.simulated_ECP,
                                 mode='Si_ECCI_simulation')
 
             # if both experimental pattern and similated pattern exist,
-            # calculated their difference and plot
+            # calculate their difference and plot if True
             if (self.simulated_ECP is not None) and (self.measured_ECP is not None):
                 self.difference = utils.calculate_difference(image1=self.measured_ECP,
                                                              image2=self.simulated_ECP)
-                self.update_display(image=self.simulated_ECP,
-                                    mode='difference')
+                #calculate the similarity of two images, display MAC
+                self.mac = utils.modal_assurance_criterion(image1=self.measured_ECP,
+                                                           image2=self.simulated_ECP)
+                self.doubleSpinBox_mac.setValue(self.mac)
+                if plot==True:
+                    self.update_display(image=self.difference,
+                                        mode='difference')
         except Exception as e:
             print('could not simulate the pattern', e)
+
+
+    def run_automatic_calibration(self):
+        mac_max = 0
+        tilt_x_max = 0
+        tilt_y_max = 0
+        ########################################################
+        tilt_x_0 = self.doubleSpinBox_tilt_x.value()
+        tilt_y_0 = self.doubleSpinBox_tilt_y.value()
+        half_range = self.doubleSpinBox_angle_range_automatic.value()
+        start_x = tilt_x_0 - half_range
+        end_x   = tilt_x_0 + half_range
+        start_y = tilt_y_0 - half_range
+        end_y   = tilt_y_0 + half_range
+        step = float(self.comboBox_angle_step_automatic.currentText())
+        TILT_X = np.arange(start_x, end_x+step, step)
+        TILT_Y = np.arange(start_y, end_y+step, step)
+        for tilt_x in TILT_X:
+            for tilt_y in TILT_Y:
+                self.repaint()
+                QtWidgets.QApplication.processEvents()
+                if self._abort_clicked_status == True:
+                    print('Abort clicked')
+                    self._abort_clicked_status = False  # reinitialise back to False
+                    return
+                self.doubleSpinBox_tilt_x.setValue(tilt_x)
+                self.doubleSpinBox_tilt_y.setValue(tilt_y)
+                self._set_tilt2(angle_num=1, plot=False) # update the slider
+                self._set_tilt2(angle_num=2, plot=False) # update the slider
+                _plot_ = self.checkBox_plot_while_running.isChecked()
+                self.calculate_simulated_ECP_pattern(plot=_plot_)
+                if self.mac > mac_max:
+                    mac_max = self.mac
+                    tilt_x_max = tilt_x
+                    tilt_y_max = tilt_y_max
+                    self.doubleSpinBox_tilt_x_calibrated.setValue(tilt_x_max)
+                    self.doubleSpinBox_tilt_y_calibrated.setValue(tilt_y_max)
+                self.repaint()
+                QtWidgets.QApplication.processEvents()
+
+        # update the calibrated tilt values at the end of the run
+        self.calibrated_tilt_x = tilt_x_max
+        self.calibrated_tilt_y = tilt_y_max
+        self.label_messages.setText('Calibration completed')
+
+
+
 
 
     def _crop_measured_ECP(self, mode='X'):
@@ -308,72 +367,73 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
     def _set_tilt(self, angle_slider=1):
         if angle_slider==1:
-            if self.horizontalScrollBar_tilt_x.isSliderDown():
-                pass
-            else:
-                print("updating")
+            if not self.horizontalScrollBar_tilt_x.isSliderDown():
+                pass #print("updating")
             value = self.horizontalScrollBar_tilt_x.value()
             value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(), x_end=+1*self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
                                                  value_to_map=value)
             self.doubleSpinBox_tilt_x.setValue(value)
-            self.calibration_tilt_x = value
-            self.display_simulated_ECP_pattern()
+            self.tilt_x = value
+            #self.calculate_simulated_ECP_pattern()
         elif angle_slider==2:
-            if self.horizontalScrollBar_tilt_y.isSliderDown():
-                pass
-            else:
-                print("i am updating")
+            if not self.horizontalScrollBar_tilt_y.isSliderDown():
+                pass #print("i am updating")
             value = self.horizontalScrollBar_tilt_y.value()
             value = utils.map_scrollbar_to_value(x_start=-1 * self.doubleSpinBox_angle_range.value(),
                                                  x_end=+1 * self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
                                                  value_to_map=value)
             self.doubleSpinBox_tilt_y.setValue(value)
-            self.calibration_tilt_y = value
-            self.display_simulated_ECP_pattern()
+            self.tilt_y = value
+            #self.calculate_simulated_ECP_pattern()
 
 
-    def _set_tilt2(self, angle_num=1):
+    def _set_tilt2(self, angle_num=1, plot=True):
         if angle_num==1:
             value = self.doubleSpinBox_tilt_x.value()
-            self.calibration_tilt_x = value
+            self.tilt_x = value
             value = utils.map_value_to_scrollbar(x_start=-1*self.doubleSpinBox_angle_range.value(),
                                                  x_end=+1*self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
                                                  value_to_map=value)
             self.horizontalScrollBar_tilt_x.setValue(int(value))
-            self.display_simulated_ECP_pattern()
+            self.calculate_simulated_ECP_pattern()
         elif angle_num==2:
             value = self.doubleSpinBox_tilt_y.value()
-            self.calibration_tilt_y = value
+            self.tilt_y = value
             value = utils.map_value_to_scrollbar(x_start=-1*self.doubleSpinBox_angle_range.value(),
                                                  x_end=+1*self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
                                                  value_to_map=value)
             self.horizontalScrollBar_tilt_y.setValue(int(value))
-            self.display_simulated_ECP_pattern()
+        if plot==True:
+            self.calculate_simulated_ECP_pattern()
 
 
-    def _set_tilt3(self, angle_slider=1):
+    def _set_tilt3(self, angle_slider=1, plot=True):
         if angle_slider==1:
             value = self.horizontalScrollBar_tilt_x.value()
             value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(), x_end=+1*self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
                                                  value_to_map=value)
-            self.calibration_tilt_x = value
-            self.display_simulated_ECP_pattern()
+            self.doubleSpinBox_tilt_x.setValue(value)
+            self.tilt_x = value
         elif angle_slider==2:
             value = self.horizontalScrollBar_tilt_y.value()
             value = utils.map_scrollbar_to_value(x_start=-1 * self.doubleSpinBox_angle_range.value(),
                                                  x_end=+1 * self.doubleSpinBox_angle_range.value(),
                                                  number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
                                                  value_to_map=value)
-            self.calibration_tilt_y = value
-            self.display_simulated_ECP_pattern()
+            self.doubleSpinBox_tilt_y.setValue(value)
+            self.tilt_y = value
+        if plot:
+            self.calculate_simulated_ECP_pattern()
 
 
-
+    def _abort_clicked(self):
+        print('------------ abort clicked --------------')
+        self._abort_clicked_status = True
 
 
 

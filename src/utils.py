@@ -39,6 +39,25 @@ def normalise(image):
 def calculate_difference(image1, image2):
     return normalise(image1) - normalise(image2)
 
+def modal_assurance_criterion(image1, image2):
+    """
+        Computers and Structures 74 (2000) 375-383
+        The Modal Assurance Criterion – Twenty Years of Use and Abuse, SOund and Vibrations 2003
+    """
+    image1 = normalise(image1)
+    image2 = normalise(image2)
+    m, n = image1.shape
+    I1 = 0
+    I2 = 0
+    I3 = 0
+    for ii in range(m):
+        I1 = I1 + np.dot( image1[ii,:], np.conj(image2[ii,:]) )
+        I2 = I2 + np.dot( image1[ii,:], np.conj(image1[ii,:]) )
+        I3 = I3 + np.dot( image2[ii,:], np.conj(image2[ii,:]) )
+
+    MAC = np.abs(I1)**2 / (I2*I3)
+    return MAC
+
 
 def current_timestamp():
     return datetime.datetime.fromtimestamp(time.time()).strftime("%y%m%d.%H%M%S")
