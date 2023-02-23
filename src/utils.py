@@ -5,6 +5,9 @@ import cv2
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+import tifffile
+import xml.etree.ElementTree as ET
+
 
 
 def map_scrollbar_to_value(x_start : float = -5,
@@ -97,3 +100,52 @@ def equalise_histogram(image, bitdepth=8):
 
 def resize(image, size=(200,200)):
     return cv2.resize(image, size)
+
+
+
+def _reformat_HKL_metadata(metadata):
+    output = {}
+    output['pc_x'] = float(metadata['pattern-center-x-pu'])
+    output['pc_y'] = float(metadata['pattern-center-y-pu'])
+    output['pc_z'] = float(metadata['detector-distance-pu'])
+    output['energy'] = float(metadata['sem-acc-voltage-kv'])
+    output['working_distance'] = float(metadata['sem-working-distance-mm'])
+    #
+    output['sample_tilt']      = float(metadata['specimen-tilt-deg'])
+    output['sample_tilt_axis'] = metadata['specimen-tilt-axis']
+    #
+    output['detector_tilt_Euler1'] = float(metadata['detector-orientation-euler1-deg'])
+    output['detector_tilt_Euler2'] = float(metadata['detector-orientation-euler2-deg'])
+    output['detector_tilt_Euler3'] = float(metadata['detector-orientation-euler3-deg'])
+    output['detector_tilt']        = float(metadata['detector-orientation-euler1-deg'])
+    #
+    output['lens-distortion']       = float(metadata['lens-distortion'])
+    output['lens-field-of-view-mm'] = float(metadata['lens-field-of-view-mm'])
+    #
+    output['detector-insertion-distance-mm'] = float(metadata['detector-insertion-distance-mm'])
+    output['beam-position-offset-x-um'] = float(metadata['beam-position-offset-x-um'])
+    output['beam-position-offset-y-um'] = float(metadata['beam-position-offset-y-um'])
+
+    return output
+
+
+def HKL_metadata(file_name, reformat='True'):
+    with tifffile.TiffFile(file_name) as tif:
+        tif_tags = {}
+        for tag in tif.pages[0].tags.values():
+            name, value = tag.name, tag.value
+            tif_tags[name] = value
+        #image = tif.pages[0].asarray()
+
+        raw_metadata = tif_tags['51122']
+        myroot = ET.fromstring(raw_metadata)
+
+        metadata = {myroot[0][i].tag: myroot[0][i].text for i in range(len(myroot[0]))}
+
+        if reformat:
+            try:
+                metadata = _reformat_HKL_metadata(metadata)
+            except Exception as e:
+                print(f'could not reformat the metadata, {e}')
+
+    return metadata
