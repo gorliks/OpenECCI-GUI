@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QFileDialog
 import sys, time, os, glob
 import numpy as np
 import copy
+import importlib
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as _FigureCanvas
@@ -20,16 +21,20 @@ from matplotlib.backends.backend_qt5agg import (
 import h5py
 import hyperspy.api as hs
 import kikuchipy as kp
+
 import electron_diffraction
+importlib.reload(electron_diffraction)
 
 import utils
-
+importlib.reload(utils)
 
 
 class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
     def __init__(self):
         super(GUIMainWindow, self).__init__()
         self.setupUi(self)
+        self.path_to_ref_master_pattern = None
+        self.path_to_ref_ctf_file = None
 
         self.measured_ref_ECP = None
         self.measured_ref_ECP_stored = None
@@ -253,6 +258,10 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                                                 detector_shape = shape,
                                                 convention=convention)
             self.label_messages.setText('ref EBSD detector settings uploaded')
+            if self.path_to_ref_master_pattern is not None:
+                self.ebsd_reference.load_master_pattern(path_to_master_pattern=self.path_to_ref_master_pattern)
+            if self.path_to_ref_ctf_file is not None:
+                self.ebsd_reference.load_xmap(file_name=self.path_to_ref_ctf_file)
             print(energy, pc_x, pc_y, pc_z, pixel_size, binning, detector_tilt, sample_tilt, projection, hemispheres, shape, convention)
         else:
             self.label_messages.setText('First, load a measured EBSD pattern to load metadata and define the number of pixels in the pattern and other settings')
@@ -299,6 +308,11 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
             self._update_ebsd_ref_settings()
 
+            if self.path_to_ref_master_pattern is not None:
+                self.ebsd_reference.load_master_pattern(path_to_master_pattern=self.path_to_ref_master_pattern)
+            if self.path_to_ref_ctf_file is not None:
+                self.ebsd_reference.load_xmap(file_name=self.path_to_ref_ctf_file)
+
 
 
 
@@ -307,9 +321,13 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         status, file_name = self._open_master_pattern()
         if status==True:
             print(file_name)
+            self.path_to_ref_master_pattern = file_name
+
             self.label_messages.setText('ref ECP masterpattern: ' + file_name)
             self.label_ecp_master_pattern_path.setText(file_name)
+
             self._update_ecp_ref_settings()
+
             output_ecp = \
                 self.ecp_reference.load_master_pattern(path_to_master_pattern=file_name)
             output_ebsd = \
@@ -326,6 +344,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                                                    options=options)
         if file_name:
             print(file_name)
+            self.path_to_ref_ctf_file = file_name
+
             self.label_messages.setText('ctf filename: ' + file_name)
             self.label_ref_ctf_file.setText(file_name)
             self._update_ecp_ref_settings()
@@ -347,7 +367,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
             # if both experimental pattern and simulated pattern exist,
             # calculate their difference and plot if True
-            if (self.simulated_ECP is not None) and (self.measured_ref_EBSD is not None):
+            if (self.simulated_ECP is not None) and (self.measured_ref_ECP is not None):
                 self.difference = utils.calculate_difference(image1=self.measured_ref_ECP,
                                                              image2=self.simulated_ECP)
                 #calculate the similarity of two images, display MAC
@@ -371,7 +391,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
             # if both experimental pattern and simulated pattern exist,
             # calculate their difference and plot if True
-            if (self.simulated_EBSD is not None) and (self.measured_ref_ECP is not None):
+            if (self.simulated_EBSD is not None) and (self.measured_ref_EBSD is not None):
                 self.difference_EBSD = utils.calculate_difference(image1=self.measured_ref_EBSD,
                                                                   image2=self.simulated_EBSD)
                 if plot==True:

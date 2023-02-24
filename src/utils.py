@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import tifffile
 import xml.etree.ElementTree as ET
 
+def test_load():
+    print('utils loaded')
 
 
 def map_scrollbar_to_value(x_start : float = -5,
