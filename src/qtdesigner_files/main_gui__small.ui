@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1317</width>
-    <height>765</height>
+    <width>1254</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
          <x>10</x>
          <y>10</y>
          <width>161</width>
-         <height>650</height>
+         <height>651</height>
         </rect>
        </property>
        <property name="currentIndex">
@@ -45,306 +45,11 @@
         <attribute name="title">
          <string>Settings</string>
         </attribute>
-        <widget class="QPushButton" name="pushButton_save_file">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>830</y>
-           <width>93</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Save file</string>
-         </property>
-        </widget>
-        <widget class="QPlainTextEdit" name="plainTextEdit_sample_name">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>750</y>
-           <width>231</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="plainText">
-          <string>sample_name</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_5">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>790</y>
-           <width>111</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Sample name:</string>
-         </property>
-        </widget>
        </widget>
        <widget class="QWidget" name="directr">
         <attribute name="title">
-         <string>test</string>
+         <string>tests</string>
         </attribute>
-        <widget class="QLabel" name="label_current_i_3">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>530</y>
-           <width>55</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_current_j_3">
-         <property name="geometry">
-          <rect>
-           <x>250</x>
-           <y>530</y>
-           <width>55</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkBox_scan_rotation_correction">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>990</y>
-           <width>231</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>correct with scan rotation</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_7">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>820</y>
-           <width>91</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>tile grid size</string>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="spinBox_clip_limit">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>850</y>
-           <width>71</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>9999</number>
-         </property>
-         <property name="value">
-          <number>10</number>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_apply_clahe">
-         <property name="geometry">
-          <rect>
-           <x>40</x>
-           <y>920</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Apply CLAHE</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_restore">
-         <property name="geometry">
-          <rect>
-           <x>40</x>
-           <y>880</y>
-           <width>91</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>restore</string>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="spinBox_tile_grid_size">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>850</y>
-           <width>71</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>9999</number>
-         </property>
-         <property name="value">
-          <number>16</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_11">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>825</y>
-           <width>81</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>clip limit</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_double_click_point_x">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>780</y>
-           <width>91</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <double>-1000000.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>1000000.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_34">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>690</y>
-           <width>141</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>selected point</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_37">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>750</y>
-           <width>141</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>double click</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_point_x">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>720</y>
-           <width>91</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <double>-1000000.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>1000000.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_point_y">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>720</y>
-           <width>91</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <double>-1000000.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>1000000.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_double_click_point_y">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>770</y>
-           <width>91</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="minimum">
-          <double>-1000000.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>1000000.000000000000000</double>
-         </property>
-        </widget>
        </widget>
       </widget>
       <widget class="QTabWidget" name="tabWidget_2">
@@ -450,8 +155,8 @@
         <widget class="QPushButton" name="pushButton_open_file_ref_ECCI_measurement">
          <property name="geometry">
           <rect>
-           <x>22</x>
-           <y>294</y>
+           <x>20</x>
+           <y>290</y>
            <width>81</width>
            <height>31</height>
           </rect>
@@ -459,7 +164,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -469,15 +174,15 @@
         <widget class="QLabel" name="label_49">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>80</x>
            <y>10</y>
-           <width>161</width>
+           <width>201</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -489,15 +194,15 @@
         <widget class="QLabel" name="label_50">
          <property name="geometry">
           <rect>
-           <x>400</x>
+           <x>390</x>
            <y>10</y>
-           <width>141</width>
+           <width>171</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -511,13 +216,13 @@
           <rect>
            <x>750</x>
            <y>10</y>
-           <width>61</width>
+           <width>81</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -538,7 +243,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="currentIndex">
@@ -553,26 +258,7 @@
             <rect>
              <x>0</x>
              <y>40</y>
-             <width>171</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Load reference masterpattern</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_ecp_master_pattern_path">
-           <property name="geometry">
-            <rect>
-             <x>170</x>
-             <y>40</y>
-             <width>271</width>
+             <width>151</width>
              <height>21</height>
             </rect>
            </property>
@@ -580,6 +266,25 @@
             <font>
              <family>Arial</family>
              <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Load ref masterpattern</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_ecp_master_pattern_path">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>40</y>
+             <width>281</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>6</pointsize>
             </font>
            </property>
            <property name="frameShape">
@@ -597,14 +302,14 @@
             <rect>
              <x>10</x>
              <y>162</y>
-             <width>71</width>
+             <width>81</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -623,7 +328,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="decimals">
@@ -636,7 +341,7 @@
           <widget class="QSpinBox" name="spinBox_ref_ECP_binning">
            <property name="geometry">
             <rect>
-             <x>180</x>
+             <x>190</x>
              <y>160</y>
              <width>41</width>
              <height>22</height>
@@ -645,7 +350,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -670,7 +375,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="decimals">
@@ -692,7 +397,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="maximum">
@@ -714,7 +419,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="maximum">
@@ -727,7 +432,7 @@
           <widget class="QLabel" name="label_55">
            <property name="geometry">
             <rect>
-             <x>145</x>
+             <x>150</x>
              <y>162</y>
              <width>41</width>
              <height>21</height>
@@ -736,7 +441,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -748,14 +453,14 @@
             <rect>
              <x>10</x>
              <y>120</y>
-             <width>161</width>
+             <width>201</width>
              <height>20</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -774,7 +479,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="decimals">
@@ -815,7 +520,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -825,16 +530,16 @@
           <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_pixel_size">
            <property name="geometry">
             <rect>
-             <x>70</x>
+             <x>90</x>
              <y>162</y>
-             <width>71</width>
+             <width>61</width>
              <height>22</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="value">
@@ -853,7 +558,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <item>
@@ -879,7 +584,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <item>
@@ -910,7 +615,7 @@
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -930,7 +635,7 @@ ECP detector</string>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -949,16 +654,16 @@ ECP detector</string>
           <widget class="QLabel" name="label_59">
            <property name="geometry">
             <rect>
-             <x>250</x>
+             <x>240</x>
              <y>140</y>
-             <width>51</width>
+             <width>71</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -977,7 +682,7 @@ ECP detector</string>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -996,16 +701,16 @@ ECP detector</string>
           <widget class="QLabel" name="label_60">
            <property name="geometry">
             <rect>
-             <x>250</x>
+             <x>240</x>
              <y>160</y>
-             <width>51</width>
+             <width>61</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1024,7 +729,7 @@ ECP detector</string>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1043,7 +748,7 @@ ECP detector</string>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="minimum">
@@ -1064,14 +769,14 @@ ECP detector</string>
             <rect>
              <x>0</x>
              <y>60</y>
-             <width>171</width>
-             <height>25</height>
+             <width>151</width>
+             <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1081,15 +786,15 @@ ECP detector</string>
           <widget class="QLabel" name="label_ref_ctf_file">
            <property name="geometry">
             <rect>
-             <x>170</x>
+             <x>160</x>
              <y>60</y>
-             <width>271</width>
+             <width>281</width>
              <height>21</height>
             </rect>
            </property>
            <property name="font">
             <font>
-             <pointsize>8</pointsize>
+             <pointsize>6</pointsize>
             </font>
            </property>
            <property name="frameShape">
@@ -1105,8 +810,8 @@ ECP detector</string>
           <widget class="QPushButton" name="pushButton_ref_ECP_display">
            <property name="geometry">
             <rect>
-             <x>380</x>
-             <y>100</y>
+             <x>370</x>
+             <y>80</y>
              <width>61</width>
              <height>61</height>
             </rect>
@@ -1114,7 +819,7 @@ ECP detector</string>
            <property name="font">
             <font>
              <family>Arial</family>
-             <pointsize>10</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1418,7 +1123,7 @@ ECP</string>
         <widget class="QSpinBox" name="spinBox_ref_meas_ECP_crop_start">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>110</x>
            <y>290</y>
            <width>61</width>
            <height>22</height>
@@ -1427,7 +1132,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="maximum">
@@ -1440,7 +1145,7 @@ ECP</string>
         <widget class="QSpinBox" name="spinBox_ref_meas_ECP_crop_end">
          <property name="geometry">
           <rect>
-           <x>170</x>
+           <x>180</x>
            <y>290</y>
            <width>61</width>
            <height>22</height>
@@ -1449,7 +1154,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="maximum">
@@ -1462,7 +1167,7 @@ ECP</string>
         <widget class="QPushButton" name="pushButton_crop_meas_ECP_X">
          <property name="geometry">
           <rect>
-           <x>95</x>
+           <x>110</x>
            <y>310</y>
            <width>61</width>
            <height>25</height>
@@ -1471,7 +1176,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1481,7 +1186,7 @@ ECP</string>
         <widget class="QPushButton" name="pushButton_crop_meas_ECP_Y">
          <property name="geometry">
           <rect>
-           <x>165</x>
+           <x>180</x>
            <y>310</y>
            <width>61</width>
            <height>25</height>
@@ -1490,7 +1195,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1500,7 +1205,7 @@ ECP</string>
         <widget class="QPushButton" name="pushButton_crop_meas_ECP_restore">
          <property name="geometry">
           <rect>
-           <x>230</x>
+           <x>250</x>
            <y>290</y>
            <width>61</width>
            <height>51</height>
@@ -1509,7 +1214,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1528,7 +1233,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -1556,7 +1261,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1575,7 +1280,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -1593,14 +1298,14 @@ ECP</string>
           <rect>
            <x>820</x>
            <y>350</y>
-           <width>81</width>
+           <width>91</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1612,14 +1317,14 @@ ECP</string>
           <rect>
            <x>820</x>
            <y>400</y>
-           <width>71</width>
+           <width>91</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1630,7 +1335,7 @@ ECP</string>
          <property name="geometry">
           <rect>
            <x>820</x>
-           <y>430</y>
+           <y>420</y>
            <width>81</width>
            <height>22</height>
           </rect>
@@ -1638,7 +1343,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -1672,7 +1377,7 @@ ECP</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pc_y">
          <property name="geometry">
           <rect>
-           <x>105</x>
+           <x>110</x>
            <y>433</y>
            <width>62</width>
            <height>22</height>
@@ -1680,7 +1385,7 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -1693,7 +1398,7 @@ ECP</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pixel_size">
          <property name="geometry">
           <rect>
-           <x>90</x>
+           <x>100</x>
            <y>460</y>
            <width>71</width>
            <height>22</height>
@@ -1702,7 +1407,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="value">
@@ -1713,7 +1418,7 @@ ECP</string>
          <property name="geometry">
           <rect>
            <x>15</x>
-           <y>355</y>
+           <y>353</y>
            <width>51</width>
            <height>20</height>
           </rect>
@@ -1721,7 +1426,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1731,16 +1436,16 @@ ECP</string>
         <widget class="QLabel" name="label_69">
          <property name="geometry">
           <rect>
-           <x>170</x>
+           <x>160</x>
            <y>360</y>
-           <width>61</width>
+           <width>71</width>
            <height>21</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1750,7 +1455,7 @@ ECP</string>
         <widget class="QLabel" name="label_70">
          <property name="geometry">
           <rect>
-           <x>25</x>
+           <x>10</x>
            <y>460</y>
            <width>101</width>
            <height>21</height>
@@ -1759,7 +1464,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1777,7 +1482,8 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="minimum">
@@ -1804,7 +1510,7 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -1825,7 +1531,7 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <item>
@@ -1842,7 +1548,7 @@ ECP</string>
         <widget class="QSpinBox" name="spinBox_ref_EBSD_binning">
          <property name="geometry">
           <rect>
-           <x>220</x>
+           <x>230</x>
            <y>460</y>
            <width>41</width>
            <height>22</height>
@@ -1851,7 +1557,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="minimum">
@@ -1869,14 +1575,14 @@ ECP</string>
           <rect>
            <x>180</x>
            <y>460</y>
-           <width>41</width>
+           <width>51</width>
            <height>21</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1894,7 +1600,7 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <item>
@@ -1916,7 +1622,7 @@ ECP</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_sample_tilt">
          <property name="geometry">
           <rect>
-           <x>220</x>
+           <x>230</x>
            <y>380</y>
            <width>71</width>
            <height>22</height>
@@ -1925,7 +1631,7 @@ ECP</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="minimum">
@@ -1952,7 +1658,7 @@ ECP</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="maximum">
@@ -1965,15 +1671,16 @@ ECP</string>
         <widget class="QPushButton" name="pushButton_set_ref_EBSD_detector">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>370</y>
+           <x>340</x>
+           <y>290</y>
            <width>101</width>
            <height>61</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -1984,7 +1691,7 @@ EBSD detector</string>
         <widget class="QLabel" name="label_72">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>10</x>
            <y>330</y>
            <width>81</width>
            <height>21</height>
@@ -1992,7 +1699,8 @@ EBSD detector</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -2010,7 +1718,7 @@ EBSD detector</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -2020,16 +1728,16 @@ EBSD detector</string>
         <widget class="QLabel" name="label_74">
          <property name="geometry">
           <rect>
-           <x>170</x>
+           <x>160</x>
            <y>380</y>
-           <width>51</width>
+           <width>61</width>
            <height>21</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -2047,7 +1755,7 @@ EBSD detector</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="maximum">
@@ -2060,7 +1768,7 @@ EBSD detector</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_detector_tilt">
          <property name="geometry">
           <rect>
-           <x>220</x>
+           <x>230</x>
            <y>360</y>
            <width>71</width>
            <height>22</height>
@@ -2069,7 +1777,7 @@ EBSD detector</string>
          <property name="font">
           <font>
            <family>Arial</family>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="minimum">
@@ -2097,7 +1805,7 @@ EBSD detector</string>
          <property name="font">
           <font>
            <family>Arial Black</family>
-           <pointsize>12</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -2107,7 +1815,7 @@ EBSD detector</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pc_z">
          <property name="geometry">
           <rect>
-           <x>185</x>
+           <x>200</x>
            <y>433</y>
            <width>62</width>
            <height>22</height>
@@ -2115,7 +1823,7 @@ EBSD detector</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="decimals">
@@ -2158,7 +1866,7 @@ EBSD detector</string>
           <rect>
            <x>20</x>
            <y>290</y>
-           <width>201</width>
+           <width>171</width>
            <height>25</height>
           </rect>
          </property>
@@ -2169,15 +1877,15 @@ EBSD detector</string>
         <widget class="QLabel" name="label_77">
          <property name="geometry">
           <rect>
-           <x>100</x>
+           <x>80</x>
            <y>10</y>
-           <width>161</width>
+           <width>201</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -2197,7 +1905,7 @@ EBSD detector</string>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <item>
@@ -2247,15 +1955,15 @@ EBSD detector</string>
         <widget class="QLabel" name="label_78">
          <property name="geometry">
           <rect>
-           <x>400</x>
+           <x>390</x>
            <y>10</y>
-           <width>231</width>
+           <width>181</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -2269,13 +1977,13 @@ EBSD detector</string>
           <rect>
            <x>750</x>
            <y>10</y>
-           <width>61</width>
+           <width>71</width>
            <height>20</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <pointsize>8</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -2315,9 +2023,9 @@ EBSD detector</string>
         <widget class="QPushButton" name="pushButton_calculate_EBSD_pattern_and_display">
          <property name="geometry">
           <rect>
-           <x>370</x>
+           <x>450</x>
            <y>290</y>
-           <width>231</width>
+           <width>181</width>
            <height>61</height>
           </rect>
          </property>
@@ -2329,8 +2037,562 @@ EBSD patternand display</string>
        </widget>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>PC refinement</string>
+         <string>PC refinement/Stack</string>
         </attribute>
+        <widget class="QPushButton" name="pushButton_open_stack_ref_EBSD_measurement">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>40</y>
+           <width>201</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Open reference EBSD stack</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_i">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>40</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_j">
+         <property name="geometry">
+          <rect>
+           <x>310</x>
+           <y>40</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_Nx">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>40</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_Ny">
+         <property name="geometry">
+          <rect>
+           <x>490</x>
+           <y>40</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_80">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>261</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>STEP 5: Reference dictionary indexing  </string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_81">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>20</y>
+           <width>21</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>i</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_82">
+         <property name="geometry">
+          <rect>
+           <x>310</x>
+           <y>20</y>
+           <width>21</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>j</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_83">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>20</y>
+           <width>21</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Nx</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_84">
+         <property name="geometry">
+          <rect>
+           <x>490</x>
+           <y>20</y>
+           <width>21</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Ny</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_ref_EBSD_generate_dictionary_index">
+         <property name="geometry">
+          <rect>
+           <x>750</x>
+           <y>500</y>
+           <width>131</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>6</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Generate dictionary index
+ (can take a while)</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_dictionary_index_N">
+         <property name="geometry">
+          <rect>
+           <x>890</x>
+           <y>515</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>6</pointsize>
+          </font>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_85">
+         <property name="geometry">
+          <rect>
+           <x>890</x>
+           <y>495</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>6</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>N_index</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_image_ref_EBSD_stack_measurement">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>190</y>
+           <width>400</width>
+           <height>266</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_86">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>170</y>
+           <width>241</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>reference stack EBSD measurement</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_87">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>110</y>
+           <width>31</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>0...j</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_i_to_plot">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>130</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_ref_stack_j_to_plot">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>130</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_88">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>110</y>
+           <width>31</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>0...i</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_89">
+         <property name="geometry">
+          <rect>
+           <x>570</x>
+           <y>170</y>
+           <width>151</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>simulate EBSD pattern</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_image_ref_EBSD_simulation_Euler_angles">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>190</y>
+           <width>400</width>
+           <height>266</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_Euler_1">
+         <property name="geometry">
+          <rect>
+           <x>450</x>
+           <y>130</y>
+           <width>91</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>-360.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_90">
+         <property name="geometry">
+          <rect>
+           <x>450</x>
+           <y>110</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Euler 1</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_91">
+         <property name="geometry">
+          <rect>
+           <x>540</x>
+           <y>110</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Euler 2</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_Euler_2">
+         <property name="geometry">
+          <rect>
+           <x>540</x>
+           <y>130</y>
+           <width>91</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>-360.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_92">
+         <property name="geometry">
+          <rect>
+           <x>630</x>
+           <y>110</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Euler 3</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_Euler_3">
+         <property name="geometry">
+          <rect>
+           <x>630</x>
+           <y>130</y>
+           <width>91</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>-360.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_display_selected_EBSD_pattern">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>120</y>
+           <width>181</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Display selected (i,j) pattern</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_display_calculated_EBSD_for_Eulers">
+         <property name="geometry">
+          <rect>
+           <x>730</x>
+           <y>110</y>
+           <width>111</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Calculate for
+(E1,E2,E3)
+and display</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_messages">
@@ -2362,9 +2624,9 @@ EBSD patternand display</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>595</y>
+         <y>592</y>
          <width>81</width>
-         <height>16</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -2386,8 +2648,8 @@ EBSD patternand display</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1317</width>
-     <height>24</height>
+     <width>1254</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

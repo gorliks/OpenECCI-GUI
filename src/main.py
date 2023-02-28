@@ -104,6 +104,13 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_set_ref_EBSD_detector.clicked.connect(lambda: self._update_ebsd_ref_settings())
         self.pushButton_calculate_EBSD_pattern_and_display.clicked.connect(lambda:
                                                                            self.calculate_simulated_EBSD_pattern())
+        self.pushButton_open_stack_ref_EBSD_measurement.clicked.connect(lambda:
+                                                                        self._open_ref_EBSD_measurement_stack())
+        self.pushButton_ref_EBSD_generate_dictionary_index.clicked.connect(lambda: self.generate_reference_DI())
+        self.pushButton_display_selected_EBSD_pattern.clicked.connect(lambda: self.display_selected_EBSD_pattern())
+        self.pushButton_display_calculated_EBSD_for_Eulers.clicked.connect(lambda: self.display_simulated_EBSD_for_Eulers())
+
+
 
 
 
@@ -193,7 +200,33 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.figures[6] = {'fig' : self.figure_EBSD_diff, 'canvas': self.canvas_EBSD_diff, 'toolbar': self.toolbar_EBSD_diff}
         ################################################################################################
 
+        self.figure_EBSD_stack = plt.figure(16)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_EBSD_stack = _FigureCanvas(self.figure_EBSD_stack)
+        self.toolbar_EBSD_stack = _NavigationToolbar(self.canvas_EBSD_stack, self)
+        #
+        self.label_image_ref_EBSD_stack_measurement.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_ref_EBSD_stack_measurement.layout().addWidget(self.toolbar_EBSD_stack)
+        self.label_image_ref_EBSD_stack_measurement.layout().addWidget(self.canvas_EBSD_stack)
 
+        self.figures[7] = {'fig' : self.figure_EBSD_stack, 'canvas': self.canvas_EBSD_stack, 'toolbar': self.toolbar_EBSD_stack}
+        ################################################################################################
+
+        self.figure_EBSD_Euler = plt.figure(17)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_EBSD_Euler = _FigureCanvas(self.figure_EBSD_Euler)
+        self.toolbar_EBSD_Euler = _NavigationToolbar(self.canvas_EBSD_Euler, self)
+        #
+        self.label_image_ref_EBSD_simulation_Euler_angles.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_ref_EBSD_simulation_Euler_angles.layout().addWidget(self.toolbar_EBSD_Euler)
+        self.label_image_ref_EBSD_simulation_Euler_angles.layout().addWidget(self.canvas_EBSD_Euler)
+
+        self.figures[8] = {'fig' : self.figure_EBSD_Euler, 'canvas': self.canvas_EBSD_Euler, 'toolbar': self.toolbar_EBSD_Euler}
+        ################################################################################################
 
 
     def _update_ecp_ref_settings(self):
@@ -289,15 +322,20 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         if status==True:
             self.label_messages.setText('loading tiff file ' + file_name)
             self.measured_ref_EBSD = utils.load_image(file_name)
-            metadata = utils.HKL_metadata(file_name)
+
+            try:
+                metadata = utils.HKL_metadata(file_name)
+                self.ebsd_reference.update_settings_from_dict(dict=metadata)
+
+            except Exception as e:
+                self.label_messages.setText('Could not read the tif metadata')
+                print('Could not read the tiff metadata')
 
             Ny, Nx = self.measured_ref_EBSD.shape
             self.spinBox_ref_EBSD_pattern_pixels_x.setValue(Nx)
             self.spinBox_ref_EBSD_pattern_pixels_y.setValue(Ny)
             #
             self.update_display(image=self.measured_ref_EBSD, mode='ref_EBSD_measurement')
-
-            self.ebsd_reference.update_settings_from_dict(dict=metadata)
 
             self.doubleSpinBox_ref_EBSD_pc_x.setValue(self.ebsd_reference.pc_x)
             self.doubleSpinBox_ref_EBSD_pc_y.setValue(self.ebsd_reference.pc_y)
@@ -312,6 +350,41 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.ebsd_reference.load_master_pattern(path_to_master_pattern=self.path_to_ref_master_pattern)
             if self.path_to_ref_ctf_file is not None:
                 self.ebsd_reference.load_xmap(file_name=self.path_to_ref_ctf_file)
+
+
+    def _open_ref_EBSD_measurement_stack(self):
+        """
+        Select the file of the (i x j) EBSD measurement of the reference sample
+        pattern dimentions are the same as ref_pattern previously loaded (Nx x Ny)
+        :return:
+        None
+        """
+        status, file_name = self._open_ebsp_stack()
+        if status==True:
+            self.label_messages.setText('loading ebsp file ' + file_name)
+            i, j, Nx, Ny = \
+                self.ebsd_reference.load_stack(file_name)
+            self.spinBox_ref_stack_i.setValue(i)
+            self.spinBox_ref_stack_j.setValue(j)
+            self.spinBox_ref_stack_Nx.setValue(Nx)
+            self.spinBox_ref_stack_Ny.setValue(Ny)
+
+
+    def generate_reference_DI(self):
+        """
+        Create the dictionary EBSD index for the reference sample
+        using the masterpattern previously loaded into the ebsd_reference instance
+        :return:
+        None
+        """
+        self.label_messages.setText('This is an extremely memory intensive operation and is not implemented')
+        print('This is an extremely memory intensive operation and is not implemented')
+        #
+        # Uncomment to create the dictionary index
+        #self.ebsd_reference.generate_dictionary_index()
+
+
+
 
 
 
@@ -401,7 +474,26 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             print('could not simulate the EBSD pattern', e)
 
 
+    def display_selected_EBSD_pattern(self):
+        if self.ebsd_reference.stack is not None:
+            i = self.spinBox_ref_stack_i_to_plot.value()
+            j = self.spinBox_ref_stack_j_to_plot.value()
+            self.update_display(image=self.ebsd_reference.stack.inav[i,j].data,
+                                mode='ref_EBSD_stack')
 
+
+    def display_simulated_EBSD_for_Eulers(self):
+        Euler1 = self.doubleSpinBox_Euler_1.value()
+        Euler2 = self.doubleSpinBox_Euler_2.value()
+        Euler3 = self.doubleSpinBox_Euler_3.value()
+        Eulers = np.array([Euler1, Euler2, Euler3])
+        Eulers = np.radians(Eulers)
+        simulated = \
+            self.ebsd_reference.calculate_diffraction_pattern(tilt_x=0,
+                                                              tilt_y=0,
+                                                              Eulers=Eulers)
+        self.update_display(image=simulated,
+                            mode='ref_EBSD_simulation_Euler')
 
 
 
@@ -455,7 +547,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.measured_ref_ECP is not None:
             start = self.spinBox_ref_meas_ECP_crop_start.value()
             end = self.spinBox_ref_meas_ECP_crop_end.value()
-            self.measured_ref_ECP = copy.deepcopy(self.measured_ref_ECP)
+            self.measured_ref_ECP_stored = copy.deepcopy(self.measured_ref_ECP)
             if mode=="X":
                 self.measured_ref_ECP = self.measured_ref_ECP[:, start : end]
             else:
@@ -467,7 +559,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
     def _restore_loaded_pattern(self):
-        self.measured_ref_ECP = copy.deepcopy(self.measured_ref_ECP)
+        self.measured_ref_ECP = copy.deepcopy(self.measured_ref_ECP_stored)
         Ny, Nx = self.measured_ref_ECP.shape
         self.spinBox_ref_ECP_pattern_pixels_x.setValue(Nx)
         self.spinBox_ref_ECP_pattern_pixels_y.setValue(Ny)
@@ -504,6 +596,10 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         if mode=='EBSD_difference':
             key = 6
             cmap='bwr'
+        if mode=='ref_EBSD_stack':
+            key=7
+        if mode=='ref_EBSD_simulation_Euler':
+            key=8
 
         self.figures[key]['fig'].clear()
         self.figures[key]['fig'].patch.set_facecolor(
@@ -591,6 +687,11 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
+
+
+
+
+
     def _open_tif_file(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -633,6 +734,25 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             # no file selected, return nothing
             return (False, None)
+
+
+    def _open_ebsp_stack(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getOpenFileName(self,
+                                                   "QFileDialog.getOpenFileName()",
+                                                   "", "ebsp files (*.ebsp);;h5 files (*.h5);;All Files (*)",
+                                                   options=options)
+        if file_name:
+            print(file_name)
+            if file_name.lower().endswith('.ebsp'):
+                success = True
+                return (success, file_name)
+        # other file format, not tiff, for example numpy array data, or txt format
+        else:
+            # no file selected, return nothing
+            return (False, None)
+
 
 
 

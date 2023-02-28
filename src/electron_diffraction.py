@@ -13,6 +13,7 @@ from diffpy.structure import Atom, Lattice, Structure
 from orix.crystal_map import CrystalMap, Phase, PhaseList
 from orix.io import load, save, loadctf
 from orix import io, plot, quaternion, vector, crystal_map
+from orix import sampling
 from orix.quaternion import Orientation, Rotation, symmetry
 from orix.vector import Vector3d, AxAngle, Miller
 
@@ -21,9 +22,11 @@ class Kikuchi():
         self.mode = mode
         self.path_to_master_pattern = None
         self.path_to_ctf_file = None
+        self.path_to_stack = None
 
         self.master_pattern = None
         self.pattern = None
+        self.stack = None
 
         self.Eulers_angles = None
         self.Eulers_average = None
@@ -44,6 +47,8 @@ class Kikuchi():
         self.convention = None #'oxford' #bruker
 
         self.detector = None
+
+        self.dictionary_index = None
 
 
     def update_settings(self,
@@ -131,7 +136,8 @@ class Kikuchi():
             self.Eulers_average = np.mean(self.Eulers_angles, axis=1)
 
             # Convert Euler angle convention from Oxford to EDAX
-            self.Eulers = np.radians(np.column_stack((self.Eulers_average)))
+            #self.Eulers = np.radians(np.column_stack((self.Eulers_average)))
+            self.Eulers = np.radians((self.Eulers_average))
 
             # post-multiply the Rotation instance created from AZtec Euler angles with Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
             self.point_Eulers = Rotation.from_euler(self.Eulers) * Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
@@ -139,19 +145,34 @@ class Kikuchi():
             return self.point_Eulers
 
         else:
-            print('......')
+            print('...xmap not loaded...')
+            return np.array([0,0,0])
 
 
-    def calculate_diffraction_pattern(self, tilt_x = 0, tilt_y = 0):
+    def calculate_diffraction_pattern(self,
+                                      tilt_x = 0,
+                                      tilt_y = 0,
+                                      Eulers=None):
         self.create_detector()
         tilt_y = [0, -tilt_y, 0]
         tilt_x = [-90, -tilt_x, 90]
         st_tilt_y = quaternion.Rotation.from_euler(np.deg2rad([tilt_y]))
         st_tilt_x = quaternion.Rotation.from_euler(np.deg2rad([tilt_x]))
 
+        if (Eulers is not None) and (Eulers.shape[0]==3):
+            # use arbitrary Euler angles for e.g. simulation
+            # post-multiply the Rotation instance created from AZtec Euler angles with Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
+            rotation = Rotation.from_euler(Eulers) * Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
+            print(Eulers, rotation)
+        else:
+            # use Euler angle from measurement of ctf file
+            rotation = self.point_Eulers * st_tilt_y * st_tilt_x
+            print(self.point_Eulers, rotation)
+
+
         if (self.master_pattern is not None) and (self.point_Eulers is not None):
             self.pattern = self.master_pattern.get_patterns(
-                                        rotations=self.point_Eulers * st_tilt_y * st_tilt_x,
+                                        rotations=rotation,
                                         detector=self.detector,
                                         energy=self.energy,
                                         phase=self.master_pattern.phase,
@@ -161,6 +182,47 @@ class Kikuchi():
 
         else:
             return( np.random.randint(0, 255, self.detector_shape) )
+
+
+    def load_stack(self, file_name):
+        self.path_to_stack = file_name
+
+        self.stack = kp.load(self.path_to_stack)
+        i, j, Nx, Ny = self.stack.data.shape
+
+        # self.detector.plot(coordinates="gnomic",
+        #                    pattern=self.stack.inav[0,0].data)
+        # plt.show()
+
+        return i, j, Nx, Ny
+
+
+    def generate_dictionary_index(self):
+        """ Create all the rotations """
+        rotations = sampling.get_sample_fundamental(
+            method="cubochoric",
+            resolution=resolution,
+            point_group=self.master_pattern.phase.point_group)
+
+        #  generate the index
+        self.dictionary_index = self.master_pattern.get_patterns(
+            rotations=rotations,
+            detector=self.detector,
+            energy=self.energy,
+            dtype_out=np.float32,
+            compute=True)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

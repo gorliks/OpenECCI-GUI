@@ -45,14 +45,14 @@
       <widget class="QTabWidget" name="tabWidget_2">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>220</x>
          <y>10</y>
          <width>1891</width>
          <height>1081</height>
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="Electron">
         <attribute name="title">
@@ -257,7 +257,7 @@
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="ECPmaster">
           <attribute name="title">
@@ -1752,7 +1752,7 @@ and display</string>
         <rect>
          <x>-10</x>
          <y>10</y>
-         <width>261</width>
+         <width>221</width>
          <height>1081</height>
         </rect>
        </property>
@@ -1836,7 +1836,7 @@ and display</string>
         <widget class="QCheckBox" name="checkBox_scan_rotation_correction">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>10</x>
            <y>990</y>
            <width>231</width>
            <height>20</height>
@@ -1844,8 +1844,8 @@ and display</string>
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
-           <bold>true</bold>
+           <weight>50</weight>
+           <bold>false</bold>
           </font>
          </property>
          <property name="text">
@@ -1858,7 +1858,7 @@ and display</string>
         <widget class="QLabel" name="label_7">
          <property name="geometry">
           <rect>
-           <x>130</x>
+           <x>90</x>
            <y>820</y>
            <width>91</width>
            <height>21</height>
@@ -1871,7 +1871,7 @@ and display</string>
         <widget class="QSpinBox" name="spinBox_clip_limit">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>850</y>
            <width>71</width>
            <height>21</height>
@@ -1890,7 +1890,7 @@ and display</string>
         <widget class="QPushButton" name="pushButton_apply_clahe">
          <property name="geometry">
           <rect>
-           <x>40</x>
+           <x>10</x>
            <y>920</y>
            <width>101</width>
            <height>31</height>
@@ -1910,7 +1910,7 @@ and display</string>
         <widget class="QPushButton" name="pushButton_restore">
          <property name="geometry">
           <rect>
-           <x>40</x>
+           <x>10</x>
            <y>880</y>
            <width>91</width>
            <height>31</height>
@@ -1930,7 +1930,7 @@ and display</string>
         <widget class="QSpinBox" name="spinBox_tile_grid_size">
          <property name="geometry">
           <rect>
-           <x>130</x>
+           <x>90</x>
            <y>850</y>
            <width>71</width>
            <height>21</height>
@@ -1949,7 +1949,7 @@ and display</string>
         <widget class="QLabel" name="label_11">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>825</y>
            <width>81</width>
            <height>16</height>
@@ -1962,7 +1962,7 @@ and display</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_double_click_point_x">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>780</y>
            <width>91</width>
            <height>22</height>
@@ -1978,7 +1978,7 @@ and display</string>
         <widget class="QLabel" name="label_34">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>690</y>
            <width>141</width>
            <height>31</height>
@@ -1998,7 +1998,7 @@ and display</string>
         <widget class="QLabel" name="label_37">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>750</y>
            <width>141</width>
            <height>31</height>
@@ -2018,7 +2018,7 @@ and display</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_point_x">
          <property name="geometry">
           <rect>
-           <x>50</x>
+           <x>10</x>
            <y>720</y>
            <width>91</width>
            <height>22</height>
@@ -2034,7 +2034,7 @@ and display</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_point_y">
          <property name="geometry">
           <rect>
-           <x>150</x>
+           <x>110</x>
            <y>720</y>
            <width>91</width>
            <height>22</height>
@@ -2050,7 +2050,7 @@ and display</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_double_click_point_y">
          <property name="geometry">
           <rect>
-           <x>150</x>
+           <x>110</x>
            <y>770</y>
            <width>91</width>
            <height>22</height>
