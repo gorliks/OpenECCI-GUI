@@ -35,6 +35,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.setupUi(self)
         self.path_to_ref_master_pattern = None
         self.path_to_ref_ctf_file = None
+        self.path_to_sample_master_pattern = None
+        self.path_to_sample_ctf_file = None
 
         self.measured_ref_ECP = None
         self.measured_ref_ECP_stored = None
@@ -51,8 +53,11 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.calibrated_tilt_x = 0
         self.calibrated_tilt_y = 0
 
-        self.ecp_reference = electron_diffraction.Kikuchi(mode='ECP')
+        self.ecp_reference  = electron_diffraction.Kikuchi(mode='ECP')
         self.ebsd_reference = electron_diffraction.Kikuchi(mode='EBSD')
+        ###############################################################
+        self.ebsd_sample    = electron_diffraction.Kikuchi(mode='EBSD')
+        self.ecp_sample     = electron_diffraction.Kikuchi(mode='ECP')
 
         self.tilt_x = 0.0
         self.tilt_y = 0.0
@@ -80,13 +85,13 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.label_messages.setText('Starting up...')
         self.pushButton_abort_automatic_calibration.clicked.connect(lambda: self._abort_clicked())
         #
-        self.horizontalScrollBar_tilt_y.valueChanged.connect(lambda: self._set_tilt(angle_slider=2))
-        self.horizontalScrollBar_tilt_x.valueChanged.connect(lambda: self._set_tilt(angle_slider=1))
-        self.horizontalScrollBar_tilt_y.sliderReleased.connect(lambda: self._set_tilt3(angle_slider=2))
-        self.horizontalScrollBar_tilt_x.sliderReleased.connect(lambda: self._set_tilt3(angle_slider=1))
+        self.horizontalScrollBar_tilt_y.valueChanged.connect(lambda: self._set_tilt(selector=2, plot=True))
+        self.horizontalScrollBar_tilt_x.valueChanged.connect(lambda: self._set_tilt(selector=1, plot=True))
+        # self.horizontalScrollBar_tilt_y.sliderReleased.connect(lambda: self._set_tilt3(selector=2, plot=True))
+        # self.horizontalScrollBar_tilt_x.sliderReleased.connect(lambda: self._set_tilt3(selector=1, plot=True))
         #
-        self.doubleSpinBox_tilt_y.editingFinished.connect(lambda: self._set_tilt2(angle_num=2))
-        self.doubleSpinBox_tilt_x.editingFinished.connect(lambda: self._set_tilt2(angle_num=1))
+        self.doubleSpinBox_tilt_y.editingFinished.connect(lambda: self._set_tilt2(selector=2, plot=True))
+        self.doubleSpinBox_tilt_x.editingFinished.connect(lambda: self._set_tilt2(selector=1, plot=True))
         self.comboBox_angle_step.currentTextChanged.connect(lambda: self._change_angle_step())
         self.doubleSpinBox_angle_range.editingFinished.connect(lambda: self._change_angle_step())
         #
@@ -96,7 +101,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_crop_meas_ECP_restore.clicked.connect(lambda: self._restore_loaded_pattern())
         self.pushButton_load_ECP_master_pattern.clicked.connect(lambda: self._load_ref_master_pattern())
         self.pushButton_set_ref_ECP_detector.clicked.connect(lambda: self._update_ecp_ref_settings())
-        self.pushButton_load_ref_ctf_file.clicked.connect(lambda: self._load_ctf_file())
+        self.pushButton_load_ref_ctf_file.clicked.connect(lambda: self._load_reference_ctf_file())
         self.pushButton_ref_ECP_display.clicked.connect(lambda: self.calculate_simulated_ECP_pattern())
         self.pushButton_run_automatic_calibration.clicked.connect(lambda: self.run_automatic_calibration())
         #
@@ -109,7 +114,9 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_ref_EBSD_generate_dictionary_index.clicked.connect(lambda: self.generate_reference_DI())
         self.pushButton_display_selected_EBSD_pattern.clicked.connect(lambda: self.display_selected_EBSD_pattern())
         self.pushButton_display_calculated_EBSD_for_Eulers.clicked.connect(lambda: self.display_simulated_EBSD_for_Eulers())
-
+        #
+        self.pushButton_load_sample_master_pattern.clicked.connect(lambda: self._load_sample_master_pattern())
+        self.pushButton_load_sample_ctf_file.clicked.connect(lambda: self._load_sample_ctf_file())
 
 
 
@@ -408,26 +415,54 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             self.label_messages.setText(output_ecp + '; ' + output_ebsd)
 
 
-    def _load_ctf_file(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,
-                                                   "QFileDialog.getOpenFileName()",
-                                                   "", "ctf files (*.ctf);;h5 files (*.h5);;All Files (*)",
-                                                   options=options)
-        if file_name:
+    def _load_sample_master_pattern(self):
+        status, file_name = self._open_master_pattern()
+        if status==True:
+            print(file_name)
+            self.path_to_sample_master_pattern = file_name
+
+            self.label_messages.setText('sample ECP masterpattern: ' + file_name)
+            self.label_sample_master_pattern_path.setText(file_name)
+
+            # self._update_ecp_sample_settings()
+
+            output_ecp = \
+                self.ecp_sample.load_master_pattern(path_to_master_pattern=file_name)
+            output_ebsd = \
+                self.ebsd_sample.load_master_pattern(path_to_master_pattern=file_name)
+            self.label_messages.setText(output_ecp + '; ' + output_ebsd)
+
+
+    def _load_reference_ctf_file(self):
+        status, file_name = self._open_ctf_file()
+        if status==True:
             print(file_name)
             self.path_to_ref_ctf_file = file_name
 
             self.label_messages.setText('ctf filename: ' + file_name)
             self.label_ref_ctf_file.setText(file_name)
-            self._update_ecp_ref_settings()
-            if file_name.lower().endswith('.ctf'):
-                output_ecp = \
-                    self.ecp_reference.load_xmap(file_name=file_name)
-                output_ebsd = \
-                    self.ebsd_reference.load_xmap(file_name=file_name)
-                self.label_messages.setText(str(output_ecp) + '; ' + str(output_ebsd))
+
+            output_ecp = \
+                self.ecp_reference.load_xmap(file_name=file_name)
+            output_ebsd = \
+                self.ebsd_reference.load_xmap(file_name=file_name)
+            self.label_messages.setText(str(output_ecp) + '; ' + str(output_ebsd))
+
+
+    def _load_sample_ctf_file(self):
+        status, file_name = self._open_ctf_file()
+        if status==True:
+            print(file_name)
+            self.path_to_sample_ctf_file = file_name
+
+            self.label_messages.setText('ctf filename: ' + file_name)
+            self.label_sample_ctf_file.setText(file_name)
+
+            output_ecp = \
+                self.ecp_sample.load_xmap(file_name=file_name)
+            output_ebsd = \
+                self.ebsd_sample.load_xmap(file_name=file_name)
+            self.label_messages.setText(str(output_ecp) + '; ' + str(output_ebsd))
 
 
     def calculate_simulated_ECP_pattern(self, plot=True):
@@ -613,6 +648,9 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
+
+
+
     def _change_angle_step(self):
         number_of_steps = 2 * self.doubleSpinBox_angle_range.value() / float(self.comboBox_angle_step.currentText())
         print(f'number of angle steps = {number_of_steps}')
@@ -620,71 +658,72 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.horizontalScrollBar_tilt_y.setMaximum(int(number_of_steps))
 
 
-    def _set_tilt(self, angle_slider=1):
-        if angle_slider==1:
-            if not self.horizontalScrollBar_tilt_x.isSliderDown():
-                pass #print("updating")
-            value = self.horizontalScrollBar_tilt_x.value()
-            value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(), x_end=+1*self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
+    def _set_tilt(self, selector=1, plot=True):
+        dict = {1 : {'spinBox' : self.doubleSpinBox_tilt_x,
+                     'number_of_steps' : self.horizontalScrollBar_tilt_x,
+                     'scrollBar' : self.horizontalScrollBar_tilt_x},
+                2: {'spinBox': self.doubleSpinBox_tilt_y,
+                    'number_of_steps': self.horizontalScrollBar_tilt_y,
+                    'scrollBar': self.horizontalScrollBar_tilt_y}
+        }
+        if selector==1 or selector==2:
+            #if not self.horizontalScrollBar_tilt_x.isSliderDown():
+            value = dict[selector]['scrollBar'].value()
+            value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(),
+                                                 x_end  =+1*self.doubleSpinBox_angle_range.value(),
+                                                 number_of_steps=dict[selector]['number_of_steps'].maximum(),
                                                  value_to_map=value)
-            self.doubleSpinBox_tilt_x.setValue(value)
-            self.tilt_x = value
-            #self.calculate_simulated_ECP_pattern()
-        elif angle_slider==2:
-            if not self.horizontalScrollBar_tilt_y.isSliderDown():
-                pass #print("i am updating")
-            value = self.horizontalScrollBar_tilt_y.value()
-            value = utils.map_scrollbar_to_value(x_start=-1 * self.doubleSpinBox_angle_range.value(),
-                                                 x_end=+1 * self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
-                                                 value_to_map=value)
-            self.doubleSpinBox_tilt_y.setValue(value)
-            self.tilt_y = value
-            #self.calculate_simulated_ECP_pattern()
+            dict[selector]['spinBox'].setValue(value)
+
+            self.tilt_x = self.doubleSpinBox_tilt_x.value()
+            self.tilt_y = self.doubleSpinBox_tilt_y.value()
+
+            if plot: self.calculate_simulated_ECP_pattern()
 
 
-    def _set_tilt2(self, angle_num=1, plot=True):
-        if angle_num==1:
-            value = self.doubleSpinBox_tilt_x.value()
-            self.tilt_x = value
+    def _set_tilt2(self, selector=1, plot=True):
+        dict = {1 : {'spinBox' : self.doubleSpinBox_tilt_x,
+                     'number_of_steps' : self.horizontalScrollBar_tilt_x,
+                     'scrollBar' : self.horizontalScrollBar_tilt_x},
+                2: {'spinBox': self.doubleSpinBox_tilt_y,
+                    'number_of_steps': self.horizontalScrollBar_tilt_y,
+                    'scrollBar': self.horizontalScrollBar_tilt_y}
+        }
+        if selector==1 or selector==2:
+            value = dict[selector]['spinBox'].value()
             value = utils.map_value_to_scrollbar(x_start=-1*self.doubleSpinBox_angle_range.value(),
-                                                 x_end=+1*self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
+                                                 x_end  =+1*self.doubleSpinBox_angle_range.value(),
+                                                 number_of_steps=dict[selector]['scrollBar'].maximum(),
                                                  value_to_map=value)
-            self.horizontalScrollBar_tilt_x.setValue(int(value))
-            self.calculate_simulated_ECP_pattern()
-        elif angle_num==2:
-            value = self.doubleSpinBox_tilt_y.value()
-            self.tilt_y = value
-            value = utils.map_value_to_scrollbar(x_start=-1*self.doubleSpinBox_angle_range.value(),
-                                                 x_end=+1*self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
-                                                 value_to_map=value)
-            self.horizontalScrollBar_tilt_y.setValue(int(value))
-        if plot==True:
-            self.calculate_simulated_ECP_pattern()
+            dict[selector]['scrollBar'].setValue(int(value))
+
+            self.tilt_x = self.doubleSpinBox_tilt_x.value()
+            self.tilt_y = self.doubleSpinBox_tilt_y.value()
+
+            if plot == True:  self.calculate_simulated_ECP_pattern()
 
 
-    def _set_tilt3(self, angle_slider=1, plot=True):
-        if angle_slider==1:
-            value = self.horizontalScrollBar_tilt_x.value()
-            value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(), x_end=+1*self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_x.maximum(),
-                                                 value_to_map=value)
-            self.doubleSpinBox_tilt_x.setValue(value)
-            self.tilt_x = value
-        elif angle_slider==2:
-            value = self.horizontalScrollBar_tilt_y.value()
-            value = utils.map_scrollbar_to_value(x_start=-1 * self.doubleSpinBox_angle_range.value(),
-                                                 x_end=+1 * self.doubleSpinBox_angle_range.value(),
-                                                 number_of_steps=self.horizontalScrollBar_tilt_y.maximum(),
-                                                 value_to_map=value)
-            self.doubleSpinBox_tilt_y.setValue(value)
-            self.tilt_y = value
-        if plot:
-            self.calculate_simulated_ECP_pattern()
 
+    def _set_tilt3(self, selector=1, plot=True):
+        dict = {1 : {'spinBox' : self.doubleSpinBox_tilt_x,
+                     'number_of_steps' : self.horizontalScrollBar_tilt_x,
+                     'scrollBar' : self.horizontalScrollBar_tilt_x},
+                2: {'spinBox': self.doubleSpinBox_tilt_y,
+                    'number_of_steps': self.horizontalScrollBar_tilt_y,
+                    'scrollBar': self.horizontalScrollBar_tilt_y}
+        }
+        if selector==1 or selector==2:
+            value = dict[selector]['scrollBar'].value()
+            value = utils.map_scrollbar_to_value(x_start=-1*self.doubleSpinBox_angle_range.value(),
+                                                 x_end  =+1*self.doubleSpinBox_angle_range.value(),
+                                                 number_of_steps=dict[selector]['number_of_steps'].maximum(),
+                                                 value_to_map=value)
+            dict[selector]['spinBox'].setValue(value)
+
+            self.tilt_x = self.doubleSpinBox_tilt_x.value()
+            self.tilt_y = self.doubleSpinBox_tilt_y.value()
+
+            if plot:  self.calculate_simulated_ECP_pattern()
 
 
 
@@ -716,6 +755,24 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             # no file selected, return nothing
             return (False, None, None)
+
+
+    def _open_ctf_file(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getOpenFileName(self,
+                                                   "QFileDialog.getOpenFileName()",
+                                                   "", "ctf files (*.ctf);;h5 files (*.h5);;All Files (*)",
+                                                   options=options)
+        if file_name:
+            print(file_name)
+            if file_name.lower().endswith('.ctf') or file_name.lower().endswith('.h5'):
+                success = True
+                return (success, file_name)
+        # other file format
+        else:
+            # no file selected, return nothing
+            return (False, None)
 
 
     def _open_master_pattern(self):

@@ -126,13 +126,15 @@ class Kikuchi():
         )
 
 
-    def load_xmap(self, file_name=None):
+    def load_xmap(self, file_name=None, correction=0):
         if file_name is not None:
             self.path_to_ctf_file = file_name
             phase_id, x, y, bands, errors, euler1, euler2, euler3, MAD, BC, BS = \
                 np.loadtxt(file_name, skiprows=16, unpack=True)
 
-            self.Eulers_angles = np.array([euler1, euler2, euler3])
+            self.Eulers_angles = np.array([euler1+correction,
+                                           euler2,
+                                           euler3])
             self.Eulers_average = np.mean(self.Eulers_angles, axis=1)
 
             # Convert Euler angle convention from Oxford to EDAX
@@ -177,9 +179,7 @@ class Kikuchi():
                                         energy=self.energy,
                                         phase=self.master_pattern.phase,
                                         compute=True)
-
             return np.squeeze(self.pattern.data)
-
         else:
             return( np.random.randint(0, 255, self.detector_shape) )
 
