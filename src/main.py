@@ -1,10 +1,9 @@
 import qtdesigner_files.main_gui as gui_main
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QFileDialog
-# import qimage2ndarray
 
+# import qimage2ndarray
 # from importlib import reload  # Python 3.4+
-#
 # from dataclasses import dataclass
 
 import sys, time, os, glob
@@ -15,18 +14,21 @@ import importlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as _FigureCanvas
 from matplotlib.backends.backend_qt5agg import (
-    NavigationToolbar2QT as _NavigationToolbar,
-)
-
-import h5py
-import hyperspy.api as hs
-import kikuchipy as kp
+    NavigationToolbar2QT as _NavigationToolbar)
 
 import electron_diffraction
 importlib.reload(electron_diffraction)
 
 import utils
 importlib.reload(utils)
+
+from diffpy.structure import Atom, Lattice, Structure
+from orix.crystal_map import CrystalMap, Phase, PhaseList
+from orix.quaternion import Orientation, Rotation, symmetry
+from orix.vector import Vector3d, AxAngle, Miller
+
+
+
 
 
 class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
@@ -58,6 +60,9 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         ###############################################################
         self.ebsd_sample    = electron_diffraction.Kikuchi(mode='EBSD')
         self.ecp_sample     = electron_diffraction.Kikuchi(mode='ECP')
+        self.Euler1 = 0
+        self.Euler2 = 0
+        self.Euler3 = 0
 
         self.tilt_x = 0.0
         self.tilt_y = 0.0
@@ -234,6 +239,130 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
         self.figures[8] = {'fig' : self.figure_EBSD_Euler, 'canvas': self.canvas_EBSD_Euler, 'toolbar': self.toolbar_EBSD_Euler}
         ################################################################################################
+
+        self.figure_EBSD_sample = plt.figure(18)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_EBSD_sample = _FigureCanvas(self.figure_EBSD_sample)
+        self.toolbar_EBSD_sample = _NavigationToolbar(self.canvas_EBSD_sample, self)
+        #
+        self.label_image_EBSD_sample_ctf.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_EBSD_sample_ctf.layout().addWidget(self.toolbar_EBSD_sample)
+        self.label_image_EBSD_sample_ctf.layout().addWidget(self.canvas_EBSD_sample)
+
+        self.figures[9] = {'fig' : self.figure_EBSD_sample, 'canvas': self.canvas_EBSD_sample, 'toolbar': self.toolbar_EBSD_sample}
+        ################################################################################################
+
+        ################################################################################################
+        self.figure_stereo_projection = plt.figure(31)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_stereo_projection = _FigureCanvas(self.figure_stereo_projection)
+        self.toolbar_stereo_projection = _NavigationToolbar(self.canvas_stereo_projection, self)
+        #
+        self.label_image_stereo_projection.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_stereo_projection.layout().addWidget(self.toolbar_stereo_projection)
+        self.label_image_stereo_projection.layout().addWidget(self.canvas_stereo_projection)
+        ################################################################################################
+
+
+    def update_display(self, image, mode='ref_ECCI_measurement'):
+        cmap = 'gray'
+        if mode=='ref_ECCI_measurement':
+            key = 1
+        if mode=='ref_ECCI_simulation':
+            key = 2
+        if mode=='difference':
+            key = 3
+            cmap = 'bwr'
+        if mode=='ref_EBSD_measurement':
+            key = 4
+        if mode=='ref_EBSD_simulation':
+            key = 5
+        if mode=='EBSD_difference':
+            key = 6
+            cmap='bwr'
+        if mode=='ref_EBSD_stack':
+            key=7
+        if mode=='ref_EBSD_simulation_Euler':
+            key=8
+        if mode=='sample_EBSD_ctf':
+            key=9
+
+        self.figures[key]['fig'].clear()
+        self.figures[key]['fig'].patch.set_facecolor(
+            (240 / 255, 240 / 255, 240 / 255))
+        self.ax = self.figures[key]['fig'].add_subplot(111)
+        self.ax.get_xaxis().set_visible(False)
+        self.ax.get_yaxis().set_visible(False)
+        self.ax.imshow(image, cmap=cmap)
+        self.figures[key]['canvas'].draw()
+
+        if mode=='sample_EBSD_ctf':
+            def on_click(event):
+                coords = []
+                coords.append(event.ydata)
+                coords.append(event.xdata)
+                try:
+                    coords = np.flip(coords[-2:], axis=0)
+                    x_clicked = coords[0]
+                    y_clicked = coords[1]
+                    print(coords, x_clicked, y_clicked)
+                except:
+                    x_clicked = 0
+                    y_clicked = 0
+                    print(x_clicked, y_clicked)
+
+                [Eu1, Eu2, Eu3] = np.rad2deg(
+                    Rotation.to_euler(
+                        self.ebsd_sample.xmap[int(y_clicked),
+                                              int(x_clicked)].orientations))[0]
+                self.lcdNumber_Euler1.display(Eu1)
+                self.lcdNumber_Euler2.display(Eu2)
+                self.lcdNumber_Euler3.display(Eu3)
+                self.Euler1 = Eu1
+                self.Euler2 = Eu2
+                self.Euler3 = Eu3
+                self.plot_stereo_projection(Euler_angles=[Eu1, Eu2, Eu3])
+
+            self.figures[key]['fig'].canvas.mpl_connect("button_press_event", on_click)
+
+
+    def plot_stereo_projection(self, Euler_angles = [0,0,0]):
+        print('stereo projection: ', Euler_angles)
+
+        n = int(90 / 10)  # Degree / net resolution
+        steps = 500
+        kwargs = dict(linewidth=0.25, color="green")
+        polar = np.linspace(0, 0.5 * np.pi, num=n)
+        v_right = Vector3d.from_polar(azimuth=np.zeros(n), polar=polar)
+        v_left = Vector3d.from_polar(azimuth=np.ones(n) * np.pi, polar=polar)
+        v010 = Vector3d.zero(shape=(n,))
+        v010.y = 1
+        v010_opposite = -v010
+        #################################################################
+        self.figure_stereo_projection.clear()
+        self.ax = self.figure_stereo_projection.subplots(subplot_kw=dict(projection="stereographic"))
+        self.ax.draw_circle(v_right, steps=steps, **kwargs)
+        self.ax.draw_circle(v_left,  steps=steps, **kwargs)
+        self.ax.draw_circle(v010, opening_angle=polar, steps=steps, **kwargs)
+        self.ax.draw_circle(v010_opposite, opening_angle=polar, steps=steps, **kwargs)
+        for label, azimuth in zip(["", "", "", ""], np.array([0, 0.5, 1, 1.5]) * np.pi):
+            self.ax.text(azimuth, 0.5 * np.pi, s=label, c="C1")
+
+        cubic = Phase(point_group="m-3m", structure=Structure())
+        m8 = Miller(uvw=[[1, 0, 0]], phase=cubic)
+        o = Orientation.from_euler(np.deg2rad(Euler_angles))
+        m9, idx = m8.symmetrise(unique=True, return_index=True)
+        m9 = ~o * m9
+        m9[idx == 0].scatter(hemisphere="upper", c=f"C0",
+                             figure=self.figure_stereo_projection,
+                             axes_labels=["X", "Y", "Z"], )
+        # renderer = self.figure_stereo_projection.canvas.renderer
+        self.canvas_stereo_projection.draw()
+
 
 
     def _update_ecp_ref_settings(self):
@@ -458,11 +587,36 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             self.label_messages.setText('ctf filename: ' + file_name)
             self.label_sample_ctf_file.setText(file_name)
 
+            skiprows = self.spinBox_skiprows.value()
+
+            """ - - - -  Create unit cells of the phases - - - - """
+            structures = [
+                Structure(title="non-index"),
+                Structure(title=self.comboBox_sample_structure_type.currentText(),
+                          atoms=[Atom(self.plainTextEdit_sample_atom.toPlainText(), [0] * 3)],
+                          lattice=Lattice(self.doubleSpinBox_lattice1.value(),
+                                          self.doubleSpinBox_lattice2.value(),
+                                          self.doubleSpinBox_lattice3.value(),
+                                          self.doubleSpinBox_lattice4.value(),
+                                          self.doubleSpinBox_lattice5.value(),
+                                          self.doubleSpinBox_lattice6.value())  )
+            ]
+            phase_list = PhaseList(
+                names=["non-index", self.comboBox_sample_structure_type.currentText() ],
+                point_groups=[None, self.plainTextEdit_sample_point_group.toPlainText()],
+                structures=structures,
+            )
+
             output_ecp = \
-                self.ecp_sample.load_xmap(file_name=file_name)
+                self.ecp_sample.load_xmap(file_name=file_name, skiprows=skiprows)
             output_ebsd = \
-                self.ebsd_sample.load_xmap(file_name=file_name)
+                self.ebsd_sample.load_xmap_sample(file_name=file_name, skiprows=skiprows,
+                                                  correction=+90, phase_list=phase_list)
             self.label_messages.setText(str(output_ecp) + '; ' + str(output_ebsd))
+
+            if self.ebsd_sample.xmap_gb is not None:
+                self.update_display(image=self.ebsd_sample.xmap_gb,
+                                    mode='sample_EBSD_ctf')
 
 
     def calculate_simulated_ECP_pattern(self, plot=True):
@@ -613,37 +767,6 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
     #         self.label_image_Si_ECCI_difference.setPixmap(QtGui.QPixmap(image_to_display))
     #     else:
     #         self.label_messages.setText('No image acquired')
-
-
-    def update_display(self, image, mode='ref_ECCI_measurement'):
-        cmap = 'gray'
-        if mode=='ref_ECCI_measurement':
-            key = 1
-        if mode=='ref_ECCI_simulation':
-            key = 2
-        if mode=='difference':
-            key = 3
-            cmap = 'bwr'
-        if mode=='ref_EBSD_measurement':
-            key = 4
-        if mode=='ref_EBSD_simulation':
-            key = 5
-        if mode=='EBSD_difference':
-            key = 6
-            cmap='bwr'
-        if mode=='ref_EBSD_stack':
-            key=7
-        if mode=='ref_EBSD_simulation_Euler':
-            key=8
-
-        self.figures[key]['fig'].clear()
-        self.figures[key]['fig'].patch.set_facecolor(
-            (240 / 255, 240 / 255, 240 / 255))
-        self.ax = self.figures[key]['fig'].add_subplot(111)
-        self.ax.get_xaxis().set_visible(False)
-        self.ax.get_yaxis().set_visible(False)
-        self.ax.imshow(image, cmap=cmap)
-        self.figures[key]['canvas'].draw()
 
 
 

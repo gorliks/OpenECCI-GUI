@@ -50,6 +50,8 @@ class Kikuchi():
 
         self.dictionary_index = None
 
+        self.xmap_gb = None
+
 
     def update_settings(self,
                         path_to_master_pattern=None,
@@ -126,29 +128,97 @@ class Kikuchi():
         )
 
 
-    def load_xmap(self, file_name=None, correction=0):
+    def load_xmap(self,
+                  file_name=None,
+                  correction=0,
+                  skiprows=16):
         if file_name is not None:
             self.path_to_ctf_file = file_name
             phase_id, x, y, bands, errors, euler1, euler2, euler3, MAD, BC, BS = \
-                np.loadtxt(file_name, skiprows=16, unpack=True)
+                np.loadtxt(file_name,
+                           skiprows=skiprows,
+                           unpack=True)
 
-            self.Eulers_angles = np.array([euler1+correction,
+            # TODO why +90 deg correction for loaded sample (Fe) EBSD xmap for euler1?
+            self.Eulers_angles = np.array([euler1 + correction,
                                            euler2,
                                            euler3])
+
             self.Eulers_average = np.mean(self.Eulers_angles, axis=1)
 
             # Convert Euler angle convention from Oxford to EDAX
             #self.Eulers = np.radians(np.column_stack((self.Eulers_average)))
             self.Eulers = np.radians((self.Eulers_average))
 
-            # post-multiply the Rotation instance created from AZtec Euler angles with Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
+            # post-multiply the Rotation instance created from AZtec Euler angles
+            # with Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
             self.point_Eulers = Rotation.from_euler(self.Eulers) * Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
 
-            return self.point_Eulers
+            return self.Eulers_average
 
         else:
             print('...xmap not loaded...')
             return np.array([0,0,0])
+
+
+
+    def load_xmap_sample(self,
+                         file_name=None,
+                         correction=+90,
+                         skiprows=15,
+                         phase_list = None
+                         ):
+        if file_name is not None:
+            self.path_to_ctf_file = file_name
+            phase_id, x, y, bands, errors, \
+            euler1, euler2, euler3, MAD, BC, BS = np.loadtxt(file_name,
+                                                             skiprows=skiprows,
+                                                             unpack=True)
+            properties = dict(BC=BC, BS=BS)
+
+            # TODO why +90 deg correction for loaded sample (Fe) EBSD xmap for euler1?
+            self.Eulers_angles = np.array([euler1 + correction,
+                                           euler2,
+                                           euler3])
+            self.Eulers_average = np.mean(self.Eulers_angles, axis=1)
+            self.Eulers_angles = np.radians(np.column_stack(self.Eulers_angles))
+            self.point_Eulers = Rotation.from_euler(self.Eulers_angles)
+
+            # Create a CrystalMap instance
+            self.xmap = CrystalMap(rotations=self.point_Eulers,
+                                   phase_id=phase_id,
+                                   x=x,
+                                   y=y,
+                                   phase_list=phase_list,
+                                   prop=properties)
+            self.xmap.scan_unit = "um"
+
+
+            ckey_au = plot.IPFColorKeyTSL(
+                self.xmap.phases["austenite"].point_group, direction=Vector3d.zvector() )
+            rgb_au = ckey_au.orientation2color(self.xmap["austenite"].orientations)
+            rgb_all = np.zeros((self.xmap.size, 3))
+            rgb_all[self.xmap.phase_id == 1] = rgb_au
+
+            # add band contrast as overlay for enhanced grain boundary display
+            self.xmap_gb = rgb_all.reshape(self.xmap.shape + (3,))
+            GB_1dim = (self.xmap.prop['BS']).reshape(self.xmap.shape)
+            overlay_min = np.nanmin(GB_1dim)
+            rescaled_overlay = (GB_1dim - overlay_min) / (np.nanmax(GB_1dim) - overlay_min)
+            n_channels = 3
+            for i in range(n_channels):
+                self.xmap_gb[:, :, i] *= rescaled_overlay
+
+
+            print('sample xmap successfully loaded')
+
+            return self.Eulers_average
+
+        else:
+            print('...sample xmap not loaded...')
+            return np.array([0,0,0])
+
+
 
 
     def calculate_diffraction_pattern(self,

@@ -45,6 +45,41 @@
         <attribute name="title">
          <string>Settings</string>
         </attribute>
+        <widget class="QSpinBox" name="spinBox_skiprows">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>111</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>1000000</number>
+         </property>
+         <property name="value">
+          <number>15</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_123">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>121</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>skiprows ctf load file</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="directr">
         <attribute name="title">
@@ -58,7 +93,7 @@
          <x>180</x>
          <y>10</y>
          <width>991</width>
-         <height>571</height>
+         <height>581</height>
         </rect>
        </property>
        <property name="currentIndex">
@@ -237,7 +272,7 @@
            <x>330</x>
            <y>290</y>
            <width>451</width>
-           <height>231</height>
+           <height>241</height>
           </rect>
          </property>
          <property name="font">
@@ -301,7 +336,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>162</y>
+             <y>182</y>
              <width>81</width>
              <height>21</height>
             </rect>
@@ -320,7 +355,7 @@
            <property name="geometry">
             <rect>
              <x>90</x>
-             <y>140</y>
+             <y>160</y>
              <width>62</width>
              <height>22</height>
             </rect>
@@ -342,7 +377,7 @@
            <property name="geometry">
             <rect>
              <x>190</x>
-             <y>160</y>
+             <y>180</y>
              <width>41</width>
              <height>22</height>
             </rect>
@@ -367,7 +402,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>140</y>
+             <y>160</y>
              <width>62</width>
              <height>22</height>
             </rect>
@@ -389,7 +424,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>100</y>
+             <y>120</y>
              <width>61</width>
              <height>22</height>
             </rect>
@@ -411,7 +446,7 @@
            <property name="geometry">
             <rect>
              <x>120</x>
-             <y>100</y>
+             <y>120</y>
              <width>61</width>
              <height>22</height>
             </rect>
@@ -433,7 +468,7 @@
            <property name="geometry">
             <rect>
              <x>150</x>
-             <y>162</y>
+             <y>182</y>
              <width>41</width>
              <height>21</height>
             </rect>
@@ -452,7 +487,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>120</y>
+             <y>140</y>
              <width>201</width>
              <height>20</height>
             </rect>
@@ -471,7 +506,7 @@
            <property name="geometry">
             <rect>
              <x>170</x>
-             <y>140</y>
+             <y>160</y>
              <width>62</width>
              <height>22</height>
             </rect>
@@ -493,7 +528,7 @@
            <property name="geometry">
             <rect>
              <x>90</x>
-             <y>100</y>
+             <y>120</y>
              <width>20</width>
              <height>16</height>
             </rect>
@@ -512,7 +547,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>82</y>
+             <y>102</y>
              <width>51</width>
              <height>21</height>
             </rect>
@@ -531,7 +566,7 @@
            <property name="geometry">
             <rect>
              <x>90</x>
-             <y>162</y>
+             <y>182</y>
              <width>61</width>
              <height>22</height>
             </rect>
@@ -541,6 +576,9 @@
              <family>Arial</family>
              <pointsize>8</pointsize>
             </font>
+           </property>
+           <property name="maximum">
+            <double>1000000.000000000000000</double>
            </property>
            <property name="value">
             <double>1.000000000000000</double>
@@ -606,9 +644,9 @@
           <widget class="QPushButton" name="pushButton_set_ref_ECP_detector">
            <property name="geometry">
             <rect>
-             <x>240</x>
-             <y>80</y>
-             <width>131</width>
+             <x>270</x>
+             <y>100</y>
+             <width>101</width>
              <height>61</height>
             </rect>
            </property>
@@ -627,7 +665,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>310</x>
-             <y>140</y>
+             <y>160</y>
              <width>71</width>
              <height>22</height>
             </rect>
@@ -655,7 +693,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>240</x>
-             <y>140</y>
+             <y>160</y>
              <width>71</width>
              <height>21</height>
             </rect>
@@ -674,7 +712,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>310</x>
-             <y>160</y>
+             <y>180</y>
              <width>71</width>
              <height>22</height>
             </rect>
@@ -702,7 +740,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>240</x>
-             <y>160</y>
+             <y>180</y>
              <width>61</width>
              <height>21</height>
             </rect>
@@ -768,7 +806,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>60</y>
+             <y>80</y>
              <width>151</width>
              <height>21</height>
             </rect>
@@ -787,7 +825,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>160</x>
-             <y>60</y>
+             <y>80</y>
              <width>281</width>
              <height>21</height>
             </rect>
@@ -811,7 +849,7 @@ ECP detector</string>
            <property name="geometry">
             <rect>
              <x>370</x>
-             <y>80</y>
+             <y>100</y>
              <width>61</width>
              <height>61</height>
             </rect>
@@ -825,6 +863,73 @@ ECP detector</string>
            <property name="text">
             <string>Display
 ECP</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="plainTextEdit_ref_masterpattern_name">
+           <property name="geometry">
+            <rect>
+             <x>160</x>
+             <y>60</y>
+             <width>61</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="plainText">
+            <string>Si</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_124">
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>60</y>
+             <width>31</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>name</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_125">
+           <property name="geometry">
+            <rect>
+             <x>240</x>
+             <y>60</y>
+             <width>81</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>space group</string>
+           </property>
+          </widget>
+          <widget class="QSpinBox" name="spinBox_ref_masterpattern_space_group">
+           <property name="geometry">
+            <rect>
+             <x>320</x>
+             <y>60</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="maximum">
+            <number>1000000</number>
+           </property>
+           <property name="value">
+            <number>227</number>
            </property>
           </widget>
          </widget>
@@ -2598,202 +2703,11 @@ and display</string>
         <attribute name="title">
          <string>Sample characterisation</string>
         </attribute>
-        <widget class="QLabel" name="label_sample_ctf_file">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>420</y>
-           <width>281</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>6</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Panel</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBox_sample_ECP_hemispheres">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>440</y>
-           <width>101</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>both</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>north</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>south</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QLabel" name="label_sample_master_pattern_path">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>400</y>
-           <width>281</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>6</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Panel</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_load_sample_master_pattern">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>400</y>
-           <width>171</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Load sample masterpattern</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_load_sample_ctf_file">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>420</y>
-           <width>151</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Load sample .ctf file</string>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="comboBox_sample_projection">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>440</y>
-           <width>81</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>lambert</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>---</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_energy">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>440</y>
-           <width>71</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>200.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>20.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_93">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>440</y>
-           <width>81</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Energy keV</string>
-         </property>
-        </widget>
         <widget class="QTabWidget" name="tabWidget_4">
          <property name="geometry">
           <rect>
-           <x>470</x>
-           <y>400</y>
+           <x>0</x>
+           <y>410</y>
            <width>511</width>
            <height>141</height>
           </rect>
@@ -2805,8 +2719,388 @@ and display</string>
           </font>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Uploads</string>
+          </attribute>
+          <widget class="QLabel" name="label_sample_ctf_file">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>50</y>
+             <width>321</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>6</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_load_sample_master_pattern">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>171</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Load sample masterpattern</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_sample_master_pattern_path">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>0</y>
+             <width>321</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>6</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pushButton_load_sample_ctf_file">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>50</y>
+             <width>171</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Load sample .ctf file</string>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice6">
+           <property name="geometry">
+            <rect>
+             <x>290</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>90.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice5">
+           <property name="geometry">
+            <rect>
+             <x>240</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>90.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice3">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>0.360000000000000</double>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_111">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>90</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Lattice</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="plainTextEdit_sample_point_group">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>90</y>
+             <width>61</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="plainText">
+            <string>432</string>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice2">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>0.360000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice4">
+           <property name="geometry">
+            <rect>
+             <x>190</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>90.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_lattice1">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>90</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="value">
+            <double>0.360000000000000</double>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="plainTextEdit_sample_atom">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>90</y>
+             <width>61</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="plainText">
+            <string>fe</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="comboBox_sample_structure_type">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>20</y>
+             <width>81</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <item>
+            <property name="text">
+             <string>austenite</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>---</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QSpinBox" name="spinBox_sample_masterpattern_space_group">
+           <property name="geometry">
+            <rect>
+             <x>330</x>
+             <y>20</y>
+             <width>51</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="maximum">
+            <number>1000000</number>
+           </property>
+           <property name="value">
+            <number>225</number>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_126">
+           <property name="geometry">
+            <rect>
+             <x>250</x>
+             <y>20</y>
+             <width>81</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>space group</string>
+           </property>
+          </widget>
+          <widget class="QPlainTextEdit" name="plainTextEdit_sample_masterpattern_name">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>20</y>
+             <width>71</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="plainText">
+            <string>Fe_fcc</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_127">
+           <property name="geometry">
+            <rect>
+             <x>138</x>
+             <y>20</y>
+             <width>31</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>name</string>
+           </property>
+          </widget>
+          <zorder>pushButton_load_sample_master_pattern</zorder>
+          <zorder>label_sample_master_pattern_path</zorder>
+          <zorder>pushButton_load_sample_ctf_file</zorder>
+          <zorder>doubleSpinBox_lattice6</zorder>
+          <zorder>doubleSpinBox_lattice5</zorder>
+          <zorder>doubleSpinBox_lattice3</zorder>
+          <zorder>label_111</zorder>
+          <zorder>plainTextEdit_sample_point_group</zorder>
+          <zorder>doubleSpinBox_lattice2</zorder>
+          <zorder>doubleSpinBox_lattice4</zorder>
+          <zorder>doubleSpinBox_lattice1</zorder>
+          <zorder>plainTextEdit_sample_atom</zorder>
+          <zorder>comboBox_sample_structure_type</zorder>
+          <zorder>label_sample_ctf_file</zorder>
+          <zorder>spinBox_sample_masterpattern_space_group</zorder>
+          <zorder>label_126</zorder>
+          <zorder>plainTextEdit_sample_masterpattern_name</zorder>
+          <zorder>label_127</zorder>
+         </widget>
          <widget class="QWidget" name="sample_settings">
           <attribute name="title">
            <string>ECP settings</string>
@@ -2830,7 +3124,7 @@ and display</string>
             <string>pixel size, um</string>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_pc_y_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_pc_y">
            <property name="geometry">
             <rect>
              <x>90</x>
@@ -2852,10 +3146,10 @@ and display</string>
             <double>0.500000000000000</double>
            </property>
           </widget>
-          <widget class="QSpinBox" name="spinBox_ref_ECP_binning_3">
+          <widget class="QSpinBox" name="spinBox_sample_ECP_binning">
            <property name="geometry">
             <rect>
-             <x>230</x>
+             <x>215</x>
              <y>80</y>
              <width>41</width>
              <height>22</height>
@@ -2877,7 +3171,7 @@ and display</string>
             <number>1</number>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_pc_x_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_pc_x">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -2899,7 +3193,7 @@ and display</string>
             <double>0.500000000000000</double>
            </property>
           </widget>
-          <widget class="QSpinBox" name="spinBox_ref_ECP_pattern_pixels_x_3">
+          <widget class="QSpinBox" name="spinBox_sample_ECP_pattern_pixels_x">
            <property name="geometry">
             <rect>
              <x>5</x>
@@ -2918,10 +3212,10 @@ and display</string>
             <number>5000</number>
            </property>
            <property name="value">
-            <number>0</number>
+            <number>1024</number>
            </property>
           </widget>
-          <widget class="QSpinBox" name="spinBox_ref_ECP_pattern_pixels_y_3">
+          <widget class="QSpinBox" name="spinBox_sample_ECP_pattern_pixels_y">
            <property name="geometry">
             <rect>
              <x>80</x>
@@ -2940,15 +3234,15 @@ and display</string>
             <number>5000</number>
            </property>
            <property name="value">
-            <number>0</number>
+            <number>1024</number>
            </property>
           </widget>
           <widget class="QLabel" name="label_109">
            <property name="geometry">
             <rect>
-             <x>180</x>
+             <x>170</x>
              <y>80</y>
-             <width>51</width>
+             <width>43</width>
              <height>21</height>
             </rect>
            </property>
@@ -2981,7 +3275,7 @@ and display</string>
             <string>Pattern centre (pc_x, pc_y, pc_z)</string>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_pc_z_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_pc_z">
            <property name="geometry">
             <rect>
              <x>170</x>
@@ -3000,7 +3294,7 @@ and display</string>
             <number>3</number>
            </property>
            <property name="value">
-            <double>4.000000000000000</double>
+            <double>3.000000000000000</double>
            </property>
           </widget>
           <widget class="QLabel" name="label_112">
@@ -3022,7 +3316,7 @@ and display</string>
             <string>Shape</string>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_pixel_size_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_pixel_size">
            <property name="geometry">
             <rect>
              <x>100</x>
@@ -3037,11 +3331,14 @@ and display</string>
              <pointsize>8</pointsize>
             </font>
            </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
            <property name="value">
-            <double>1.000000000000000</double>
+            <double>10.000000000000000</double>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_ref_ECP_projection_3">
+          <widget class="QComboBox" name="comboBox_sample_ECP_projection">
            <property name="geometry">
             <rect>
              <x>160</x>
@@ -3067,7 +3364,7 @@ and display</string>
             </property>
            </item>
           </widget>
-          <widget class="QComboBox" name="comboBox_ref_ECP_hemispheres_3">
+          <widget class="QComboBox" name="comboBox_sample_ECP_hemispheres">
            <property name="geometry">
             <rect>
              <x>240</x>
@@ -3098,11 +3395,11 @@ and display</string>
             </property>
            </item>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_detector_tilt_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_detector_tilt">
            <property name="geometry">
             <rect>
-             <x>360</x>
-             <y>50</y>
+             <x>340</x>
+             <y>60</y>
              <width>71</width>
              <height>22</height>
             </rect>
@@ -3129,8 +3426,8 @@ and display</string>
           <widget class="QLabel" name="label_113">
            <property name="geometry">
             <rect>
-             <x>290</x>
-             <y>50</y>
+             <x>270</x>
+             <y>60</y>
              <width>71</width>
              <height>21</height>
             </rect>
@@ -3145,11 +3442,11 @@ and display</string>
             <string>detector tilt</string>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_ECP_sample_tilt_3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_ECP_sample_tilt">
            <property name="geometry">
             <rect>
-             <x>360</x>
-             <y>70</y>
+             <x>340</x>
+             <y>80</y>
              <width>71</width>
              <height>22</height>
             </rect>
@@ -3176,8 +3473,8 @@ and display</string>
           <widget class="QLabel" name="label_114">
            <property name="geometry">
             <rect>
-             <x>290</x>
-             <y>70</y>
+             <x>270</x>
+             <y>80</y>
              <width>61</width>
              <height>21</height>
             </rect>
@@ -3211,15 +3508,36 @@ and display</string>
             <string>×</string>
            </property>
           </widget>
+          <widget class="QPushButton" name="pushButton_set_sample_ECP_detector">
+           <property name="geometry">
+            <rect>
+             <x>420</x>
+             <y>50</y>
+             <width>71</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Update
+ECP
+settings</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_4">
           <attribute name="title">
            <string>EBSD settings</string>
           </attribute>
-          <widget class="QSpinBox" name="spinBox_ref_EBSD_binning_2">
+          <widget class="QSpinBox" name="spinBox_sample_EBSD_binning">
            <property name="geometry">
             <rect>
-             <x>230</x>
+             <x>225</x>
              <y>80</y>
              <width>41</width>
              <height>22</height>
@@ -3238,10 +3556,10 @@ and display</string>
             <number>100000</number>
            </property>
            <property name="value">
-            <number>4</number>
+            <number>1</number>
            </property>
           </widget>
-          <widget class="QSpinBox" name="spinBox_ref_EBSD_pattern_pixels_y_2">
+          <widget class="QSpinBox" name="spinBox_sample_EBSD_pattern_pixels_y">
            <property name="geometry">
             <rect>
              <x>80</x>
@@ -3259,7 +3577,7 @@ and display</string>
             <number>5000</number>
            </property>
            <property name="value">
-            <number>0</number>
+            <number>512</number>
            </property>
           </widget>
           <widget class="QLabel" name="label_115">
@@ -3280,7 +3598,7 @@ and display</string>
             <string>Pattern centre (pc_x, pc_y, pc_z)</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_ref_EBSD_convention_2">
+          <widget class="QComboBox" name="comboBox_sample_EBSD_convention">
            <property name="geometry">
             <rect>
              <x>310</x>
@@ -3310,7 +3628,7 @@ and display</string>
             </property>
            </item>
           </widget>
-          <widget class="QComboBox" name="comboBox_ref_EBSD_hemispheres_2">
+          <widget class="QComboBox" name="comboBox_sample_EBSD_hemispheres">
            <property name="geometry">
             <rect>
              <x>240</x>
@@ -3359,7 +3677,7 @@ and display</string>
             <string>pixel size, um</string>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pc_y_2">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_pc_y">
            <property name="geometry">
             <rect>
              <x>80</x>
@@ -3380,7 +3698,7 @@ and display</string>
             <double>0.500000000000000</double>
            </property>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pc_x_2">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_pc_x">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -3401,7 +3719,7 @@ and display</string>
             <double>0.500000000000000</double>
            </property>
           </widget>
-          <widget class="QSpinBox" name="spinBox_ref_EBSD_pattern_pixels_x_2">
+          <widget class="QSpinBox" name="spinBox_sample_EBSD_pattern_pixels_x">
            <property name="geometry">
             <rect>
              <x>5</x>
@@ -3419,14 +3737,14 @@ and display</string>
             <number>5000</number>
            </property>
            <property name="value">
-            <number>0</number>
+            <number>512</number>
            </property>
           </widget>
           <widget class="QLabel" name="label_117">
            <property name="geometry">
             <rect>
              <x>280</x>
-             <y>70</y>
+             <y>80</y>
              <width>61</width>
              <height>21</height>
             </rect>
@@ -3446,7 +3764,7 @@ and display</string>
             <rect>
              <x>180</x>
              <y>80</y>
-             <width>51</width>
+             <width>43</width>
              <height>21</height>
             </rect>
            </property>
@@ -3460,7 +3778,7 @@ and display</string>
             <string>Binning</string>
            </property>
           </widget>
-          <widget class="QComboBox" name="comboBox_ref_EBSD_projection_2">
+          <widget class="QComboBox" name="comboBox_sample_EBSD_projection">
            <property name="geometry">
             <rect>
              <x>160</x>
@@ -3485,11 +3803,98 @@ and display</string>
             </property>
            </item>
           </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_detector_tilt_2">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_detector_tilt">
            <property name="geometry">
             <rect>
              <x>350</x>
-             <y>50</y>
+             <y>60</y>
+             <width>71</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="minimum">
+            <double>-360.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>360.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>-90.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_pixel_size">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>80</y>
+             <width>71</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_pc_z">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>60</y>
+             <width>62</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="decimals">
+            <number>4</number>
+           </property>
+           <property name="value">
+            <double>0.600000000000000</double>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_119">
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>60</y>
+             <width>71</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>detector tilt</string>
+           </property>
+          </widget>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_EBSD_sample_tilt">
+           <property name="geometry">
+            <rect>
+             <x>350</x>
+             <y>80</y>
              <width>71</width>
              <height>22</height>
             </rect>
@@ -3511,93 +3916,6 @@ and display</string>
            </property>
            <property name="value">
             <double>0.000000000000000</double>
-           </property>
-          </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pixel_size_2">
-           <property name="geometry">
-            <rect>
-             <x>100</x>
-             <y>80</y>
-             <width>71</width>
-             <height>22</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>8</pointsize>
-            </font>
-           </property>
-           <property name="value">
-            <double>59.200000000000003</double>
-           </property>
-          </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_pc_z_2">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>60</y>
-             <width>62</width>
-             <height>22</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>8</pointsize>
-            </font>
-           </property>
-           <property name="decimals">
-            <number>4</number>
-           </property>
-           <property name="value">
-            <double>4.000000000000000</double>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_119">
-           <property name="geometry">
-            <rect>
-             <x>280</x>
-             <y>50</y>
-             <width>71</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>8</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>detector tilt</string>
-           </property>
-          </widget>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_ref_EBSD_sample_tilt_2">
-           <property name="geometry">
-            <rect>
-             <x>350</x>
-             <y>70</y>
-             <width>71</width>
-             <height>22</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>8</pointsize>
-            </font>
-           </property>
-           <property name="minimum">
-            <double>-360.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>360.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.100000000000000</double>
-           </property>
-           <property name="value">
-            <double>70.000000000000000</double>
            </property>
           </widget>
           <widget class="QLabel" name="label_120">
@@ -3638,13 +3956,225 @@ and display</string>
             <string>Shape</string>
            </property>
           </widget>
+          <widget class="QPushButton" name="pushButton_set_sample_EBSD_detector">
+           <property name="geometry">
+            <rect>
+             <x>430</x>
+             <y>50</y>
+             <width>71</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Update
+EBSD
+settings</string>
+           </property>
+          </widget>
          </widget>
         </widget>
-        <widget class="QComboBox" name="comboBox_sample_structure_type">
+        <widget class="QLabel" name="label_image_EBSD_sample_ctf">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>480</y>
+           <y>10</y>
+           <width>350</width>
+           <height>300</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLCDNumber" name="lcdNumber_Euler1">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>320</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+        </widget>
+        <widget class="QLCDNumber" name="lcdNumber_Euler2">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>320</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+        </widget>
+        <widget class="QLCDNumber" name="lcdNumber_Euler3">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>320</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_image_sample_EBSD_simulation">
+         <property name="geometry">
+          <rect>
+           <x>370</x>
+           <y>10</y>
+           <width>300</width>
+           <height>256</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_image_sample_ECP_simulation">
+         <property name="geometry">
+          <rect>
+           <x>680</x>
+           <y>10</y>
+           <width>300</width>
+           <height>256</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_image_stereo_projection">
+         <property name="geometry">
+          <rect>
+           <x>525</x>
+           <y>270</y>
+           <width>300</width>
+           <height>256</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_sample_energy">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>370</y>
+           <width>71</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>200.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>20.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_93">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>370</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -3655,69 +4185,10 @@ and display</string>
            <pointsize>8</pointsize>
           </font>
          </property>
-         <item>
-          <property name="text">
-           <string>austenite</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>---</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QPlainTextEdit" name="plainTextEdit_sample_atom">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>480</y>
-           <width>61</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="plainText">
-          <string>&quot;fe&quot;</string>
+         <property name="text">
+          <string>Energy keV</string>
          </property>
         </widget>
-        <widget class="QPlainTextEdit" name="plainTextEdit_sample_lattice">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>480</y>
-           <width>221</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="plainText">
-          <string>0.360, 0.360, 0.360, 90, 90, 90</string>
-         </property>
-        </widget>
-        <widget class="QPlainTextEdit" name="plainTextEdit_sample_point_group">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>500</y>
-           <width>61</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="plainText">
-          <string>442</string>
-         </property>
-        </widget>
-        <zorder>comboBox_sample_ECP_hemispheres</zorder>
-        <zorder>label_sample_master_pattern_path</zorder>
-        <zorder>pushButton_load_sample_master_pattern</zorder>
-        <zorder>pushButton_load_sample_ctf_file</zorder>
-        <zorder>comboBox_sample_projection</zorder>
-        <zorder>doubleSpinBox_sample_energy</zorder>
-        <zorder>label_93</zorder>
-        <zorder>label_sample_ctf_file</zorder>
-        <zorder>tabWidget_4</zorder>
-        <zorder>comboBox_sample_structure_type</zorder>
-        <zorder>plainTextEdit_sample_atom</zorder>
-        <zorder>plainTextEdit_sample_lattice</zorder>
-        <zorder>plainTextEdit_sample_point_group</zorder>
        </widget>
       </widget>
       <widget class="QLabel" name="label_messages">
@@ -3762,6 +4233,19 @@ and display</string>
        </property>
        <property name="text">
         <string>messages</string>
+       </property>
+      </widget>
+      <widget class="QPlainTextEdit" name="plainTextEdit_sample_lattice">
+       <property name="geometry">
+        <rect>
+         <x>990</x>
+         <y>630</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="plainText">
+        <string>0.360, 0.360, 0.360, 90, 90, 90</string>
        </property>
       </widget>
      </widget>
