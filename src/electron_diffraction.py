@@ -9,13 +9,13 @@ import utils
 import importlib
 importlib.reload(utils)
 
-from diffpy.structure import Atom, Lattice, Structure
-from orix.crystal_map import CrystalMap, Phase, PhaseList
-from orix.io import load, save, loadctf
+from orix.crystal_map import CrystalMap
 from orix import io, plot, quaternion, vector, crystal_map
 from orix import sampling
-from orix.quaternion import Orientation, Rotation, symmetry
-from orix.vector import Vector3d, AxAngle, Miller
+from orix.quaternion import Rotation
+from orix.vector import Vector3d
+from diffsims.crystallography import ReciprocalLatticeVector
+
 
 class Kikuchi():
     def __init__(self, mode='EBSD'):
@@ -97,7 +97,10 @@ class Kikuchi():
         if 'pc_x' in dict.keys(): self.pc_x = dict['pc_x']
 
 
-    def load_master_pattern(self, path_to_master_pattern=None):
+    def load_master_pattern(self,
+                            path_to_master_pattern=None,
+                            name="Si",
+                            space_group='227'):
         try:
             self.master_pattern = kp.load(path_to_master_pattern,
                                          projection=self.projection,
@@ -107,7 +110,9 @@ class Kikuchi():
                   f'hemispheres {self.hemispheres}, energy {self.energy}')
             self.path_to_master_pattern = path_to_master_pattern
             # TODO crystal phase more generic, now hardcoded as Si and space group 227
-            phase = crystal_map.Phase(name="Si", space_group=227)
+            # phase = crystal_map.Phase(name="Si", space_group=227)
+            phase = crystal_map.Phase(name=name,
+                                      space_group=space_group)
             self.master_pattern.phase = phase
             print('Master pattern loaded successfully')
             return('Master pattern loaded successfully')
@@ -224,22 +229,37 @@ class Kikuchi():
     def calculate_diffraction_pattern(self,
                                       tilt_x = 0,
                                       tilt_y = 0,
+                                      stage_rotation = 0,
+                                      stage_tilt = 0,
                                       Eulers=None):
         self.create_detector()
+
         tilt_y = [0, -tilt_y, 0]
         tilt_x = [-90, -tilt_x, 90]
         st_tilt_y = quaternion.Rotation.from_euler(np.deg2rad([tilt_y]))
         st_tilt_x = quaternion.Rotation.from_euler(np.deg2rad([tilt_x]))
 
+        stage_rotation = [-stage_rotation, 0, 0]
+        stage_tilt = [-90, -stage_tilt, 90]
+        stage_rotation = quaternion.Rotation.from_euler(np.deg2rad([stage_rotation]))
+        stage_tilt = quaternion.Rotation.from_euler(np.deg2rad([stage_tilt]))
+
         if (Eulers is not None) and (Eulers.shape[0]==3):
             # use arbitrary Euler angles for e.g. simulation
             # post-multiply the Rotation instance created from AZtec Euler angles with Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
-            rotation = Rotation.from_euler(Eulers) * Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
-            print(Eulers, rotation)
+            rotation = Rotation.from_euler(Eulers) * \
+                       st_tilt_x * \
+                       st_tilt_y * \
+                       stage_rotation * \
+                       stage_tilt #* \
+                       #Rotation.from_axes_angles([0, 0, 1], -np.pi / 2)
         else:
             # use Euler angle from measurement of ctf file
-            rotation = self.point_Eulers * st_tilt_y * st_tilt_x
-            print(self.point_Eulers, rotation)
+            rotation = self.point_Eulers * \
+                       st_tilt_y * \
+                       st_tilt_x * \
+                       stage_rotation * \
+                       stage_tilt
 
 
         if (self.master_pattern is not None) and (self.point_Eulers is not None):
@@ -281,6 +301,45 @@ class Kikuchi():
             energy=self.energy,
             dtype_out=np.float32,
             compute=True)
+
+
+    def create_simulator(self):
+        ref = ReciprocalLatticeVector(
+            phase=self.master_pattern.phase,
+            hkl=[[1, 1, 1], [2, 0, 0], [2, 2, 0], [3, 1, 1]]
+        )
+        ref = ref.symmetrise().unique()
+        hkl_sets = ref.get_hkl_sets()
+        print(hkl_sets)
+        self.simulator = kp.simulations.KikuchiPatternSimulator(ref)
+
+    def get_indexed_kikuchi(self,
+                            Euler_angles=[0,0,0],
+                            tilt_x = 0,
+                            tilt_y = 0,
+                            stage_rotation = 0,
+                            stage_tilt = 0):
+        self.create_simulator()
+        tilt_y = [0, -tilt_y, 0]
+        tilt_x = [-90, -tilt_x, 90]
+        st_tilty = quaternion.Rotation.from_euler(np.deg2rad(tilt_y))
+        st_tiltx = quaternion.Rotation.from_euler(np.deg2rad(tilt_x))
+        ########################################################################
+        r = quaternion.Rotation.from_euler(np.deg2rad(Euler_angles))
+        stage_rotation = [-stage_rotation, 0, 0]
+        stage_tilt     = [-90, -stage_tilt, 90]
+        stage_rotation = quaternion.Rotation.from_euler(np.deg2rad([stage_rotation]))
+        stage_tilt = quaternion.Rotation.from_euler(np.deg2rad([stage_tilt]))
+
+        rotation = r * st_tilty * st_tiltx * stage_rotation * stage_tilt
+
+        sim = self.simulator.on_detector(self.detector, rotation)
+        lines, zone_axes, zone_axes_labels = sim.as_collections(
+            zone_axes=True,
+            zone_axes_labels=True,
+            zone_axes_labels_kwargs=dict(fontsize=6),
+        )
+        return lines, zone_axes, zone_axes_labels
 
 
 

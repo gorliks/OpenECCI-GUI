@@ -52,8 +52,12 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.difference_EBSD = None
 
         self._abort_clicked_status = False
+        self.tilt_x = 0.0
+        self.tilt_y = 0.0
         self.calibrated_tilt_x = 0
         self.calibrated_tilt_y = 0
+        self.mac = 0.0
+        self.mac_max = 0.0
 
         self.ecp_reference  = electron_diffraction.Kikuchi(mode='ECP')
         self.ebsd_reference = electron_diffraction.Kikuchi(mode='EBSD')
@@ -63,9 +67,6 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Euler1 = 0
         self.Euler2 = 0
         self.Euler3 = 0
-
-        self.tilt_x = 0.0
-        self.tilt_y = 0.0
 
         self.horizontalScrollBar_tilt_y.setValue(50)
         self.horizontalScrollBar_tilt_x.setValue(50)
@@ -122,6 +123,10 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         #
         self.pushButton_load_sample_master_pattern.clicked.connect(lambda: self._load_sample_master_pattern())
         self.pushButton_load_sample_ctf_file.clicked.connect(lambda: self._load_sample_ctf_file())
+        #
+        self.pushButton_set_sample_ECP_detector.clicked.connect(lambda: self._update_ecp_sample_settings())
+        self.pushButton_set_sample_EBSD_detector.clicked.connect(lambda: self._update_ebsd_sample_settings())
+        self.pushButton_display_for_manual_Eulers.clicked.connect(lambda: self.display_EBSD_ECP_for_Eulers())
 
 
 
@@ -266,6 +271,30 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.label_image_stereo_projection.layout().addWidget(self.toolbar_stereo_projection)
         self.label_image_stereo_projection.layout().addWidget(self.canvas_stereo_projection)
         ################################################################################################
+        ################################################################################################
+        self.figure_EBSD_wide_angle_sim = plt.figure(32)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_EBSD_wide_angle_sim = _FigureCanvas(self.figure_EBSD_wide_angle_sim)
+        self.toolbar_EBSD_wide_angle_sim = _NavigationToolbar(self.canvas_EBSD_wide_angle_sim, self)
+        #
+        self.label_image_sample_EBSD_simulation.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_sample_EBSD_simulation.layout().addWidget(self.toolbar_EBSD_wide_angle_sim)
+        self.label_image_sample_EBSD_simulation.layout().addWidget(self.canvas_EBSD_wide_angle_sim)
+        ################################################################################################
+        ################################################################################################
+        self.figure_ECP_wide_angle_sim = plt.figure(33)
+        plt.axis("off")
+        plt.tight_layout()
+        plt.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.01)
+        self.canvas_ECP_wide_angle_sim = _FigureCanvas(self.figure_ECP_wide_angle_sim)
+        self.toolbar_ECP_wide_angle_sim = _NavigationToolbar(self.canvas_ECP_wide_angle_sim, self)
+        #
+        self.label_image_sample_ECP_simulation.setLayout(QtWidgets.QVBoxLayout())
+        self.label_image_sample_ECP_simulation.layout().addWidget(self.toolbar_ECP_wide_angle_sim)
+        self.label_image_sample_ECP_simulation.layout().addWidget(self.canvas_ECP_wide_angle_sim)
+        ################################################################################################
 
 
     def update_display(self, image, mode='ref_ECCI_measurement'):
@@ -285,11 +314,11 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             key = 6
             cmap='bwr'
         if mode=='ref_EBSD_stack':
-            key=7
+            key = 7
         if mode=='ref_EBSD_simulation_Euler':
-            key=8
+            key = 8
         if mode=='sample_EBSD_ctf':
-            key=9
+            key = 9
 
         self.figures[key]['fig'].clear()
         self.figures[key]['fig'].patch.set_facecolor(
@@ -326,8 +355,56 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.Euler2 = Eu2
                 self.Euler3 = Eu3
                 self.plot_stereo_projection(Euler_angles=[Eu1, Eu2, Eu3])
+                self.plot_wide_angle_EBSD(Euler_angles=[Eu1, Eu2, Eu3])
+                self.plot_wide_angle_ECP(Euler_angles=[Eu1, Eu2, Eu3])
 
             self.figures[key]['fig'].canvas.mpl_connect("button_press_event", on_click)
+
+
+    def plot_wide_angle_EBSD(self, Euler_angles=[0, 0, 0]):
+        self._update_ebsd_sample_settings()
+        Euler_angles = np.radians(Euler_angles)
+        pattern = \
+            self.ebsd_sample.calculate_diffraction_pattern(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
+                                                           tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
+                                                           Eulers=Euler_angles)
+        self.figure_EBSD_wide_angle_sim.clear()
+        self.figure_EBSD_wide_angle_sim.patch.set_facecolor(
+            (240 / 255, 240 / 255, 240 / 255))
+        self.ax = self.figure_EBSD_wide_angle_sim.add_subplot(111)
+        self.ax.get_xaxis().set_visible(False)
+        self.ax.get_yaxis().set_visible(False)
+        self.ax.imshow(pattern, cmap='gray')
+        if self.checkBox_plot_indexed.isChecked():
+            lines, zone_axes, zone_axes_labels = \
+                self.ebsd_sample.get_indexed_kikuchi(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
+                                                     tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
+                                                     Euler_angles=Euler_angles,
+                                                     stage_rotation=self.doubleSpinBox_stage_rotation.value(),
+                                                     stage_tilt=self.doubleSpinBox_stage_tilt.value())
+            self.ax.add_collection(lines)
+            self.ax.add_collection(zone_axes)
+            for label in zone_axes_labels:
+                self.ax.add_artist(label)
+
+        self.canvas_EBSD_wide_angle_sim.draw()
+
+
+    def plot_wide_angle_ECP(self, Euler_angles=[0, 0, 0]):
+        self._update_ecp_sample_settings()
+        Euler_angles = np.radians(Euler_angles)
+        pattern = \
+            self.ecp_sample.calculate_diffraction_pattern(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
+                                                          tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
+                                                          Eulers=Euler_angles)
+        self.figure_ECP_wide_angle_sim.clear()
+        self.figure_ECP_wide_angle_sim.patch.set_facecolor(
+            (240 / 255, 240 / 255, 240 / 255))
+        self.ax = self.figure_ECP_wide_angle_sim.add_subplot(111)
+        self.ax.get_xaxis().set_visible(False)
+        self.ax.get_yaxis().set_visible(False)
+        self.ax.imshow(pattern, cmap='gray')
+        self.canvas_ECP_wide_angle_sim.draw()
 
 
     def plot_stereo_projection(self, Euler_angles = [0,0,0]):
@@ -364,6 +441,17 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.canvas_stereo_projection.draw()
 
 
+    def display_EBSD_ECP_for_Eulers(self):
+        Eu1 = self.doubleSpinBox_Euler_1.value()
+        Eu2 = self.doubleSpinBox_Euler_2.value()
+        Eu3 = self.doubleSpinBox_Euler_3.value()
+        Eulers = np.array([Eu1, Eu2, Eu3])
+        self.plot_wide_angle_EBSD(Euler_angles=Eulers)
+        self.plot_wide_angle_ECP(Euler_angles=Eulers)
+
+
+
+    ####################################################################################################################
 
     def _update_ecp_ref_settings(self):
         if self.measured_ref_ECP is not None:
@@ -435,9 +523,70 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             self.label_messages.setText('First, load a measured EBSD pattern to load metadata and define the number of pixels in the pattern and other settings')
 
+    ####################################################################################################################
+
+    def _update_ecp_sample_settings(self):
+        energy = self.doubleSpinBox_sample_energy.value()
+        projection = self.comboBox_sample_ECP_projection.currentText()
+        hemispheres = self.comboBox_sample_ECP_hemispheres.currentText()
+        shape = (self.spinBox_sample_ECP_pattern_pixels_x.value(),
+                 self.spinBox_sample_ECP_pattern_pixels_y.value())
+        pc_x = self.doubleSpinBox_sample_ECP_pc_x.value()
+        pc_y = self.doubleSpinBox_sample_ECP_pc_y.value()
+        pc_z = self.doubleSpinBox_sample_ECP_pc_z.value()
+        pixel_size = self.doubleSpinBox_sample_ECP_pixel_size.value()
+        detector_tilt = self.doubleSpinBox_sample_ECP_detector_tilt.value()
+        sample_tilt = self.doubleSpinBox_sample_ECP_sample_tilt.value()
+        binning = self.spinBox_sample_ECP_binning.value()
+        self.ecp_sample.update_settings(self,
+                                        energy=energy,
+                                        pc_x = pc_x,
+                                        pc_y = pc_y,
+                                        pc_z = pc_z,
+                                        pixel_size = pixel_size,
+                                        binning = binning,
+                                        detector_tilt = detector_tilt,
+                                        sample_tilt = sample_tilt,
+                                        projection = projection,
+                                        hemispheres = hemispheres,
+                                        detector_shape = shape)
+        self.label_messages.setText('sample ECP detector settings uploaded')
+        print(energy, pc_x, pc_y, pc_z, pixel_size, binning, detector_tilt, sample_tilt, projection, hemispheres, shape)
 
 
+    def _update_ebsd_sample_settings(self):
+        energy = self.doubleSpinBox_sample_energy.value()
+        projection = self.comboBox_sample_EBSD_projection.currentText()
+        hemispheres = self.comboBox_sample_EBSD_hemispheres.currentText()
+        shape = (self.spinBox_sample_EBSD_pattern_pixels_x.value(),
+                 self.spinBox_sample_EBSD_pattern_pixels_y.value())
+        pc_x = self.doubleSpinBox_sample_EBSD_pc_x.value()
+        pc_y = self.doubleSpinBox_sample_EBSD_pc_y.value()
+        pc_z = self.doubleSpinBox_sample_EBSD_pc_z.value()
+        pixel_size = self.doubleSpinBox_sample_EBSD_pixel_size.value()
+        detector_tilt = self.doubleSpinBox_sample_EBSD_detector_tilt.value()
+        sample_tilt = self.doubleSpinBox_sample_EBSD_sample_tilt.value()
+        binning = self.spinBox_sample_EBSD_binning.value()
 
+        convention = self.comboBox_sample_EBSD_convention.currentText()
+
+        self.ebsd_sample.update_settings(self,
+                                         energy=energy,
+                                         pc_x = pc_x,
+                                         pc_y = pc_y,
+                                         pc_z = pc_z,
+                                         pixel_size = pixel_size,
+                                         binning = binning,
+                                         detector_tilt = detector_tilt,
+                                         sample_tilt = sample_tilt,
+                                         projection = projection,
+                                         hemispheres = hemispheres,
+                                         detector_shape = shape,
+                                         convention=convention)
+        self.label_messages.setText('sample EBSD detector settings uploaded')
+        print(energy, pc_x, pc_y, pc_z, pixel_size, binning, detector_tilt, sample_tilt, projection, hemispheres, shape, convention)
+
+    ####################################################################################################################
 
 
 
@@ -538,9 +687,13 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             self._update_ecp_ref_settings()
 
             output_ecp = \
-                self.ecp_reference.load_master_pattern(path_to_master_pattern=file_name)
+                self.ecp_reference.load_master_pattern(path_to_master_pattern=file_name,
+                                                       name=self.plainTextEdit_ref_masterpattern_name.toPlainText(),
+                                                       space_group=self.spinBox_ref_masterpattern_space_group.value())
             output_ebsd = \
-                self.ebsd_reference.load_master_pattern(path_to_master_pattern=file_name)
+                self.ebsd_reference.load_master_pattern(path_to_master_pattern=file_name,
+                                                        name=self.plainTextEdit_ref_masterpattern_name.toPlainText(),
+                                                        space_group=self.spinBox_ref_masterpattern_space_group.value())
             self.label_messages.setText(output_ecp + '; ' + output_ebsd)
 
 
@@ -556,9 +709,13 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             # self._update_ecp_sample_settings()
 
             output_ecp = \
-                self.ecp_sample.load_master_pattern(path_to_master_pattern=file_name)
+                self.ecp_sample.load_master_pattern(path_to_master_pattern=file_name,
+                                                    name=self.plainTextEdit_sample_masterpattern_name.toPlainText(),
+                                                    space_group=self.spinBox_sample_masterpattern_space_group.value())
             output_ebsd = \
-                self.ebsd_sample.load_master_pattern(path_to_master_pattern=file_name)
+                self.ebsd_sample.load_master_pattern(path_to_master_pattern=file_name,
+                                                     name=self.plainTextEdit_sample_masterpattern_name.toPlainText(),
+                                                     space_group=self.spinBox_sample_masterpattern_space_group.value())
             self.label_messages.setText(output_ecp + '; ' + output_ebsd)
 
 
@@ -636,6 +793,17 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.mac = utils.modal_assurance_criterion(image1=self.measured_ref_ECP,
                                                            image2=self.simulated_ECP)
                 self.doubleSpinBox_mac.setValue(self.mac)
+
+                """  update the best tilt angles for calibration """
+                if self.mac > self.mac_max:
+                    self.doubleSpinBox_tilt_x_calibrated.setValue(self.tilt_x)
+                    self.doubleSpinBox_tilt_y_calibrated.setValue(self.tilt_y)
+                    self.calibrated_tilt_x = self.tilt_x
+                    self.calibrated_tilt_y = self.tilt_y
+                    self.mac_max = self.mac
+                    self.doubleSpinBox_mac_max.setValue(self.mac_max)
+                    print(f'mac_max = {self.mac_max}')
+
                 if plot==True:
                     self.update_display(image=self.difference,
                                         mode='difference')
@@ -711,16 +879,20 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                     return
                 self.doubleSpinBox_tilt_x.setValue(tilt_x)
                 self.doubleSpinBox_tilt_y.setValue(tilt_y)
-                self._set_tilt2(angle_num=1, plot=False) # update the slider
-                self._set_tilt2(angle_num=2, plot=False) # update the slider
+                self._set_tilt2(selector=1, plot=False) # update the slider
+                self._set_tilt2(selector=2, plot=False) # update the slider
                 _plot_ = self.checkBox_plot_while_running.isChecked()
                 self.calculate_simulated_ECP_pattern(plot=_plot_)
                 if self.mac > mac_max:
                     mac_max = self.mac
+                    self.mac_max = self.mac
                     tilt_x_max = tilt_x
                     tilt_y_max = tilt_y
+                    self.calibrated_tilt_x = tilt_x_max
+                    self.calibrated_tilt_y = tilt_y_max
                     self.doubleSpinBox_tilt_x_calibrated.setValue(tilt_x_max)
                     self.doubleSpinBox_tilt_y_calibrated.setValue(tilt_y_max)
+                    self.doubleSpinBox_mac_max.setValue(mac_max)
                 self.repaint()
                 QtWidgets.QApplication.processEvents()
 
