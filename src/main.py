@@ -346,8 +346,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
                 [Eu1, Eu2, Eu3] = np.rad2deg(
                     Rotation.to_euler(
-                        self.ebsd_sample.xmap[int(y_clicked),
-                                              int(x_clicked)].orientations))[0]
+                        self.ebsd_sample.xmap[int(x_clicked),
+                                              int(y_clicked)].orientations))[0]
                 self.lcdNumber_Euler1.display(Eu1)
                 self.lcdNumber_Euler2.display(Eu2)
                 self.lcdNumber_Euler3.display(Eu3)
@@ -482,7 +482,6 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             print(energy, pc_x, pc_y, pc_z, pixel_size, binning, detector_tilt, sample_tilt, projection, hemispheres, shape)
         else:
             self.label_messages.setText('First, load a measured ECP/ECCI pattern to define the number of pixels in the pattern')
-
 
 
     def _update_ebsd_ref_settings(self):
@@ -670,11 +669,6 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
-
-
-
-
-
     def _load_ref_master_pattern(self):
         status, file_name = self._open_master_pattern()
         if status==True:
@@ -739,6 +733,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         status, file_name = self._open_ctf_file()
         if status==True:
             print(file_name)
+            self.label_messages.setText('Loading the ctf file. please hold...')
             self.path_to_sample_ctf_file = file_name
 
             self.label_messages.setText('ctf filename: ' + file_name)
@@ -774,6 +769,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             if self.ebsd_sample.xmap_gb is not None:
                 self.update_display(image=self.ebsd_sample.xmap_gb,
                                     mode='sample_EBSD_ctf')
+            self.label_messages.setText('ctf file has been loaded.')
 
 
     def calculate_simulated_ECP_pattern(self, plot=True):

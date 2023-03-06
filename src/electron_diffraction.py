@@ -129,8 +129,7 @@ class Kikuchi():
             pc=[self.pc_x, self.pc_y, self.pc_z],
             px_size=self.pixel_size,
             binning=self.binning,
-            convention=self.convention
-        )
+            convention=self.convention)
 
 
     def load_xmap(self,
@@ -164,7 +163,6 @@ class Kikuchi():
         else:
             print('...xmap not loaded...')
             return np.array([0,0,0])
-
 
 
     def load_xmap_sample(self,
@@ -222,8 +220,6 @@ class Kikuchi():
         else:
             print('...sample xmap not loaded...')
             return np.array([0,0,0])
-
-
 
 
     def calculate_diffraction_pattern(self,
@@ -313,6 +309,7 @@ class Kikuchi():
         print(hkl_sets)
         self.simulator = kp.simulations.KikuchiPatternSimulator(ref)
 
+
     def get_indexed_kikuchi(self,
                             Euler_angles=[0,0,0],
                             tilt_x = 0,
@@ -325,7 +322,7 @@ class Kikuchi():
         st_tilty = quaternion.Rotation.from_euler(np.deg2rad(tilt_y))
         st_tiltx = quaternion.Rotation.from_euler(np.deg2rad(tilt_x))
         ########################################################################
-        r = quaternion.Rotation.from_euler(np.deg2rad(Euler_angles))
+        r = quaternion.Rotation.from_euler(Euler_angles)
         stage_rotation = [-stage_rotation, 0, 0]
         stage_tilt     = [-90, -stage_tilt, 90]
         stage_rotation = quaternion.Rotation.from_euler(np.deg2rad([stage_rotation]))

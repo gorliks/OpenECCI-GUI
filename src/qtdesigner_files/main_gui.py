@@ -1679,9 +1679,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget_3.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(3)
+        self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(1)
-        self.tabWidget_4.setCurrentIndex(2)
+        self.tabWidget_4.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
