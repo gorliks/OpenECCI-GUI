@@ -422,7 +422,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="ECCI_reference">
         <attribute name="title">
@@ -4136,6 +4136,7 @@ settings</string>
          <property name="font">
           <font>
            <family>Arial</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -4153,6 +4154,7 @@ settings</string>
          <property name="font">
           <font>
            <family>Arial</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -4170,6 +4172,7 @@ settings</string>
          <property name="font">
           <font>
            <family>Arial</family>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -4346,6 +4349,19 @@ settings</string>
 and display</string>
          </property>
         </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit_m8">
+         <property name="geometry">
+          <rect>
+           <x>530</x>
+           <y>530</y>
+           <width>291</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="plainText">
+          <string>1,0,0,  1,1,0,  1,1,1</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_messages">
@@ -4390,19 +4406,6 @@ and display</string>
        </property>
        <property name="text">
         <string>messages</string>
-       </property>
-      </widget>
-      <widget class="QPlainTextEdit" name="plainTextEdit_sample_lattice">
-       <property name="geometry">
-        <rect>
-         <x>990</x>
-         <y>630</y>
-         <width>221</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="plainText">
-        <string>0.360, 0.360, 0.360, 90, 90, 90</string>
        </property>
       </widget>
      </widget>
