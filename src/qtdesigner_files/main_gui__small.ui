@@ -168,58 +168,11 @@
           <double>0.100000000000000</double>
          </property>
         </widget>
-        <widget class="QLabel" name="label_128">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>220</y>
-           <width>81</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>MAC max</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_mac_max">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>240</y>
-           <width>81</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="decimals">
-          <number>5</number>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>1000000000.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_tilt">
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>360</y>
+           <y>320</y>
            <width>62</width>
            <height>22</height>
           </rect>
@@ -235,7 +188,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>340</y>
+           <y>300</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -254,7 +207,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>300</y>
+           <y>260</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -273,7 +226,7 @@
          <property name="geometry">
           <rect>
            <x>30</x>
-           <y>320</y>
+           <y>280</y>
            <width>62</width>
            <height>22</height>
           </rect>
@@ -1698,6 +1651,53 @@ ECP</string>
           <string>MAC</string>
          </property>
         </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_mac_max">
+         <property name="geometry">
+          <rect>
+           <x>820</x>
+           <y>370</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="decimals">
+          <number>5</number>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_128">
+         <property name="geometry">
+          <rect>
+           <x>820</x>
+           <y>350</y>
+           <width>81</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>MAC max</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="EBSD_reference">
         <attribute name="title">
@@ -2836,7 +2836,7 @@ and display</string>
           </font>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -4418,7 +4418,7 @@ and display</string>
      <x>0</x>
      <y>0</y>
      <width>1254</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -390,12 +390,21 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.Euler1 = Eu1
                 self.Euler2 = Eu2
                 self.Euler3 = Eu3
+                self.doubleSpinBox_Euler_1.setValue(Eu1)
+                self.doubleSpinBox_Euler_2.setValue(Eu2)
+                self.doubleSpinBox_Euler_3.setValue(Eu3)
 
                 self.plot_stereo_projection(Euler_angles=[Eu1, Eu2, Eu3])
                 self.plot_wide_angle_EBSD(Euler_angles=[Eu1, Eu2, Eu3])
                 self.plot_wide_angle_ECP(Euler_angles=[Eu1, Eu2, Eu3])
 
-            self.figures[key]['fig'].canvas.mpl_connect("button_press_event", on_click)
+            self.figures[key]['fig'].canvas.mpl_connect("button_press_event",
+                                                        on_click)
+            self.blitted_cursor = utils.BlittedCursor(self.ax)
+            self.figures[key]['fig'].canvas.mpl_connect('motion_notify_event',
+                                                        self.blitted_cursor.on_mouse_move)
+
+
 
 
     def plot_wide_angle_EBSD(self, Euler_angles=[0, 0, 0]):
@@ -454,6 +463,62 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                      '+', c='red', markersize=15, markeredgewidth=3)
 
         self.canvas_ECP_wide_angle_sim.draw()
+
+        def on_click(event):
+            coords = []
+            coords.append(event.ydata)
+            coords.append(event.xdata)
+            try:
+                x_pos = coords[-2]
+                y_pos = coords[-1]
+            except:
+                x_pos = 0
+                y_pos = 0
+
+            [PCx_bkp, PCy_bkp, PCz_bkp] = self.ecp_sample.detector.pc[0]
+            [Ny, Nx] = self.ecp_sample.detector.shape
+            px_size_bkp =  self.ecp_sample.detector.px_size
+            binning_bkp =  self.ecp_sample.detector.binning
+
+            # Calculated the phycial distances on the detector from selected pixel to the projection centre, calculated in micrometer/um
+            [coord_x, coord_y] = [x_pos, y_pos]
+            distance_x = (coord_x - PCx_bkp * Nx) * px_size_bkp * binning_bkp
+            distance_y = (PCy_bkp * Ny - coord_y) * px_size_bkp * binning_bkp
+            distance_l = PCz_bkp * Ny * px_size_bkp * binning_bkp
+
+            # Calcuated the azimuthal and polar angle of the selected pixel in the detector frame
+            if distance_x == 0 and distance_y == 0:
+                azi_bkp = 0
+            elif distance_x > 0 and distance_y == 0:
+                azi_bkp = 0
+            elif distance_x == 0 and distance_y > 0:
+                azi_bkp = np.pi / 2
+            elif distance_x < 0 and distance_y == 0:
+                azi_bkp = np.pi
+            elif distance_x == 0 and distance_y < 0:
+                azi_bkp = np.pi * 3 / 2
+            elif distance_x < 0:
+                azi_bkp = np.arctan(distance_y / distance_x) + np.pi
+            elif distance_x > 0 and distance_y < 0:
+                azi_bkp = np.arctan(distance_y / distance_x) + np.pi * 2
+            else:
+                azi_bkp = np.arctan(distance_y / distance_x)
+
+            polar_bkp = np.arctan(np.sqrt(distance_x ** 2 + distance_y ** 2) / distance_l)
+
+            # self.doubleSpinBox_stage_rotation.setValue(np.degrees(azi_bkp)-90)
+            # self.doubleSpinBox_stage_tilt.setValue(np.degrees(polar_bkp))
+            self.label_messages.setText(f"Pixel position {int(x_pos)}, {int(y_pos)}\n "
+                                        f"Physical distance {round(distance_x,2), round(distance_y,2), round(distance_l,2)}um \n"
+                                        f"Stage Rot {round(np.degrees(azi_bkp)-90,2)}\N{DEGREE SIGN}, "
+                                        f"Stage tilt {round(np.degrees(polar_bkp),2)}\N{DEGREE SIGN}")
+
+        self.figure_ECP_wide_angle_sim.canvas.mpl_connect("button_press_event",
+                                                          on_click)
+        self.blitted_cursor2 = utils.BlittedCursor(self.ax)
+        self.figure_ECP_wide_angle_sim.canvas.mpl_connect('motion_notify_event',
+                                                          self.blitted_cursor2.on_mouse_move)
+
 
 
     def plot_stereo_projection(self, Euler_angles = [0,0,0]):
