@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1254</width>
+    <width>1229</width>
     <height>737</height>
    </rect>
   </property>
@@ -4362,6 +4362,117 @@ and display</string>
           <string>1,0,0,  1,1,0,  1,1,1</string>
          </property>
         </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_rotation_calculated">
+         <property name="geometry">
+          <rect>
+           <x>840</x>
+           <y>310</y>
+           <width>62</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <double>-360.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_tilt_calculated">
+         <property name="geometry">
+          <rect>
+           <x>910</x>
+           <y>310</y>
+           <width>62</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <double>-360.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_131">
+         <property name="geometry">
+          <rect>
+           <x>910</x>
+           <y>290</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>stage tilt</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_132">
+         <property name="geometry">
+          <rect>
+           <x>840</x>
+           <y>290</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>stage rotation</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_133">
+         <property name="geometry">
+          <rect>
+           <x>870</x>
+           <y>280</y>
+           <width>61</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Calculated</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_display_for_stage_rot_tilt">
+         <property name="geometry">
+          <rect>
+           <x>840</x>
+           <y>340</y>
+           <width>131</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Apply calculated
+stage orientation</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_messages">
@@ -4417,7 +4528,7 @@ and display</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1254</width>
+     <width>1229</width>
      <height>21</height>
     </rect>
    </property>

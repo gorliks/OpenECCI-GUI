@@ -157,6 +157,10 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.doubleSpinBox_stage_tilt.valueChanged.connect(lambda: self.plot_wide_angle_ECP(Euler_angles=[self.Euler1,
                                                                                                           self.Euler2,
                                                                                                           self.Euler3]))
+        self.pushButton_display_for_stage_rot_tilt.clicked.connect(lambda: self.apply_stage_rot_and_tilt(Euler_angles=[self.Euler1,
+                                                                                                          self.Euler2,
+                                                                                                          self.Euler3]))
+
 
 
 
@@ -407,14 +411,19 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
-    def plot_wide_angle_EBSD(self, Euler_angles=[0, 0, 0]):
+    def plot_wide_angle_EBSD(self, Euler_angles=[0, 0, 0],
+                             stage_rotation=None,
+                             stage_tilt=None):
+        if stage_rotation is None or stage_tilt is None:
+            stage_rotation = self.doubleSpinBox_stage_rotation.value()
+            stage_tilt = self.doubleSpinBox_stage_tilt.value()
         self._update_ebsd_sample_settings()
         Euler_angles = np.radians(Euler_angles)
         self.wide_angle_EBSD_pattern = \
             self.ebsd_sample.calculate_diffraction_pattern(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
                                                            tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
-                                                           stage_rotation=self.doubleSpinBox_stage_rotation.value(),
-                                                           stage_tilt=self.doubleSpinBox_stage_tilt.value(),
+                                                           stage_rotation=stage_rotation,
+                                                           stage_tilt=stage_tilt,
                                                            Eulers=Euler_angles)
         self.figure_EBSD_wide_angle_sim.clear()
         self.figure_EBSD_wide_angle_sim.patch.set_facecolor(
@@ -428,8 +437,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.ebsd_sample.get_indexed_kikuchi(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
                                                      tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
                                                      Euler_angles=Euler_angles,
-                                                     stage_rotation=self.doubleSpinBox_stage_rotation.value(),
-                                                     stage_tilt=self.doubleSpinBox_stage_tilt.value())
+                                                     stage_rotation=stage_rotation,
+                                                     stage_tilt=stage_tilt)
             self.ax.add_collection(self.lines)
             self.ax.add_collection(self.zone_axes)
             for label in self.zone_axes_labels:
@@ -439,14 +448,19 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
-    def plot_wide_angle_ECP(self, Euler_angles=[0, 0, 0]):
+    def plot_wide_angle_ECP(self, Euler_angles=[0, 0, 0],
+                            stage_rotation=None,
+                            stage_tilt=None):
+        if stage_rotation is None or stage_tilt is None:
+            stage_rotation = self.doubleSpinBox_stage_rotation.value()
+            stage_tilt = self.doubleSpinBox_stage_tilt.value()
         self._update_ecp_sample_settings()
         Euler_angles = np.radians(Euler_angles)
         self.wide_angle_ECP_pattern = \
             self.ecp_sample.calculate_diffraction_pattern(tilt_x=self.doubleSpinBox_tilt_x_calibrated.value(),
                                                           tilt_y=self.doubleSpinBox_tilt_y_calibrated.value(),
-                                                          stage_rotation=self.doubleSpinBox_stage_rotation.value(),
-                                                          stage_tilt=self.doubleSpinBox_stage_tilt.value(),
+                                                          stage_rotation=stage_rotation,
+                                                          stage_tilt=stage_tilt,
                                                           Eulers=Euler_angles)
         self.figure_ECP_wide_angle_sim.clear()
         self.figure_ECP_wide_angle_sim.patch.set_facecolor(
@@ -506,8 +520,8 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
             polar_bkp = np.arctan(np.sqrt(distance_x ** 2 + distance_y ** 2) / distance_l)
 
-            # self.doubleSpinBox_stage_rotation.setValue(np.degrees(azi_bkp)-90)
-            # self.doubleSpinBox_stage_tilt.setValue(np.degrees(polar_bkp))
+            self.doubleSpinBox_stage_rotation_calculated.setValue(np.degrees(azi_bkp)-90)
+            self.doubleSpinBox_stage_tilt_calculated.setValue(np.degrees(polar_bkp))
             self.label_messages.setText(f"Pixel position {int(x_pos)}, {int(y_pos)}\n "
                                         f"Physical distance {round(distance_x,2), round(distance_y,2), round(distance_l,2)}um \n"
                                         f"Stage Rot {round(np.degrees(azi_bkp)-90,2)}\N{DEGREE SIGN}, "
@@ -518,6 +532,19 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.blitted_cursor2 = utils.BlittedCursor(self.ax)
         self.figure_ECP_wide_angle_sim.canvas.mpl_connect('motion_notify_event',
                                                           self.blitted_cursor2.on_mouse_move)
+
+
+    def apply_stage_rot_and_tilt(self, Euler_angles=[0, 0, 0]):
+        stage_rotation = self.doubleSpinBox_stage_rotation_calculated.value()
+        stage_tilt = self.doubleSpinBox_stage_tilt_calculated.value()
+        self.plot_wide_angle_EBSD(Euler_angles=Euler_angles,
+                                 stage_rotation=stage_rotation,
+                                 stage_tilt=stage_tilt)
+        self.plot_wide_angle_ECP(Euler_angles=Euler_angles,
+                                 stage_rotation=stage_rotation,
+                                 stage_tilt=stage_tilt)
+
+
 
 
 
