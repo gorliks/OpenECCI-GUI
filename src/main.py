@@ -59,11 +59,20 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.mac = 0.0
         self.mac_max = 0.0
 
+        self.stage_rotation_calculated = 0.0
+        self.stage_tilt_calculated = 0.0
+        self.stage_rotation_calculated_total = 0.0
+        self.stage_tilt_calculated_total = 0.0
+        self.azi_bkp = 0.0
+        self.polar_bkp = 0.0
+
+        ###############################################################
         self.ecp_reference  = electron_diffraction.Kikuchi(mode='ECP')
         self.ebsd_reference = electron_diffraction.Kikuchi(mode='EBSD')
         ###############################################################
         self.ebsd_sample    = electron_diffraction.Kikuchi(mode='EBSD')
         self.ecp_sample     = electron_diffraction.Kikuchi(mode='ECP')
+        ###############################################################
         self.Euler1 = 0
         self.Euler2 = 0
         self.Euler3 = 0
@@ -160,6 +169,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_display_for_stage_rot_tilt.clicked.connect(lambda: self.apply_stage_rot_and_tilt(Euler_angles=[self.Euler1,
                                                                                                           self.Euler2,
                                                                                                           self.Euler3]))
+        self.pushButton_display_for_stage_rot_tilt_restore.clicked.connect(lambda: self.restore_stage_rot_and_tilt())
 
 
 
@@ -371,6 +381,16 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
         if mode=='sample_EBSD_ctf':
             def on_click(event):
+
+                self.doubleSpinBox_stage_rotation_calculated.setValue(0)
+                self.doubleSpinBox_stage_tilt_calculated.setValue(0)
+                self.doubleSpinBox_stage_rotation_calculated_total.setValue(0)
+                self.doubleSpinBox_stage_tilt_calculated_total.setValue(0)
+                self.stage_rotation_calculated = 0.0
+                self.stage_tilt_calculated = 0.0
+                self.stage_rotation_calculated_total = 0.0
+                self.stage_tilt_calculated_total = 0.0
+
                 coords = []
                 coords.append(event.ydata)
                 coords.append(event.xdata)
@@ -479,20 +499,17 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.canvas_ECP_wide_angle_sim.draw()
 
         def on_click(event):
-            coords = []
-            coords.append(event.ydata)
-            coords.append(event.xdata)
             try:
-                x_pos = coords[-2]
-                y_pos = coords[-1]
+                x_pos = event.xdata
+                y_pos = event.ydata
             except:
                 x_pos = 0
                 y_pos = 0
 
             [PCx_bkp, PCy_bkp, PCz_bkp] = self.ecp_sample.detector.pc[0]
             [Ny, Nx] = self.ecp_sample.detector.shape
-            px_size_bkp =  self.ecp_sample.detector.px_size
-            binning_bkp =  self.ecp_sample.detector.binning
+            px_size_bkp = self.ecp_sample.detector.px_size
+            binning_bkp = self.ecp_sample.detector.binning
 
             # Calculated the phycial distances on the detector from selected pixel to the projection centre, calculated in micrometer/um
             [coord_x, coord_y] = [x_pos, y_pos]
@@ -520,15 +537,24 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
 
             polar_bkp = np.arctan(np.sqrt(distance_x ** 2 + distance_y ** 2) / distance_l)
 
-            self.doubleSpinBox_stage_rotation_calculated.setValue(np.degrees(azi_bkp)-90)
-            self.doubleSpinBox_stage_tilt_calculated.setValue(np.degrees(polar_bkp))
-            self.label_messages.setText(f"Pixel position {int(x_pos)}, {int(y_pos)}\n "
-                                        f"Physical distance {round(distance_x,2), round(distance_y,2), round(distance_l,2)}um \n"
+            #############################################################################
+            self.stage_rotation_calculated = np.degrees(azi_bkp) - 90
+            self.stage_tilt_calculated = np.degrees(polar_bkp)
+            #############################################################################
+            self.doubleSpinBox_stage_rotation_calculated.setValue(self.stage_rotation_calculated)
+            self.doubleSpinBox_stage_tilt_calculated.setValue(self.stage_tilt_calculated)
+            self.doubleSpinBox_stage_rotation_calculated_total.setValue(self.stage_rotation_calculated_total)
+            self.doubleSpinBox_stage_tilt_calculated_total.setValue(self.stage_tilt_calculated_total)
+            #############################################################################
+
+            self.label_messages.setText(f"Pixel position {int(x_pos)}, {int(y_pos)}\n"
+                                        f"Physical distance {round(distance_x,2), round(distance_y,2), round(distance_l,2)}um\n"
                                         f"Stage Rot {round(np.degrees(azi_bkp)-90,2)}\N{DEGREE SIGN}, "
                                         f"Stage tilt {round(np.degrees(polar_bkp),2)}\N{DEGREE SIGN}")
 
-        self.figure_ECP_wide_angle_sim.canvas.mpl_connect("button_press_event",
-                                                          on_click)
+
+        self.figure_ECP_wide_angle_sim.canvas.mpl_connect("button_press_event", on_click)
+
         self.blitted_cursor2 = utils.BlittedCursor(self.ax)
         self.figure_ECP_wide_angle_sim.canvas.mpl_connect('motion_notify_event',
                                                           self.blitted_cursor2.on_mouse_move)
@@ -537,6 +563,14 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
     def apply_stage_rot_and_tilt(self, Euler_angles=[0, 0, 0]):
         stage_rotation = self.doubleSpinBox_stage_rotation_calculated.value()
         stage_tilt = self.doubleSpinBox_stage_tilt_calculated.value()
+        #############################################################################
+        # stage_rotation = self.stage_rotation_calculated_total
+        # stage_tilt = self.stage_tilt_calculated_total
+        #############################################################################
+        print(f'stage rotation calculated   {self.stage_rotation_calculated}, stage rotation total   {self.stage_rotation_calculated_total}')
+        print(f'total stage tilt calculated {self.stage_tilt_calculated},     total stage tilt total {self.stage_tilt_calculated_total}')
+        print('*'*50)
+        #############################################################################
         self.plot_wide_angle_EBSD(Euler_angles=Euler_angles,
                                  stage_rotation=stage_rotation,
                                  stage_tilt=stage_tilt)
@@ -545,6 +579,25 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
                                  stage_tilt=stage_tilt)
 
 
+    def restore_stage_rot_and_tilt(self):
+        self.doubleSpinBox_stage_rotation_calculated.setValue(0)
+        self.doubleSpinBox_stage_tilt_calculated.setValue(0)
+        self.doubleSpinBox_stage_rotation_calculated_total.setValue(0)
+        self.doubleSpinBox_stage_tilt_calculated_total.setValue(0)
+        self.stage_rotation_calculated = 0.0
+        self.stage_tilt_calculated = 0.0
+        self.stage_rotation_calculated_total = 0.0
+        self.stage_tilt_calculated_total = 0.0
+
+        Euler_angles = [self.Euler1,
+                        self.Euler2,
+                        self.Euler3]
+        self.plot_wide_angle_EBSD(Euler_angles=Euler_angles,
+                                 stage_rotation=0,
+                                 stage_tilt=0)
+        self.plot_wide_angle_ECP(Euler_angles=Euler_angles,
+                                 stage_rotation=0,
+                                 stage_tilt=0)
 
 
 
@@ -907,8 +960,10 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             output_ecp = \
                 self.ecp_sample.load_xmap(file_name=file_name, skiprows=skiprows)
             output_ebsd = \
-                self.ebsd_sample.load_xmap_sample(file_name=file_name, skiprows=skiprows,
-                                                  correction=+90, phase_list=phase_list)
+                self.ebsd_sample.load_xmap_sample(file_name=file_name,
+                                                  skiprows=skiprows,
+                                                  correction=+90,
+                                                  phase_list=phase_list)
             self.label_messages.setText(str(output_ecp) + '; ' + str(output_ebsd))
 
             if self.ebsd_sample.xmap_gb is not None:

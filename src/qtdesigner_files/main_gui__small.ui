@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1229</width>
-    <height>737</height>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
          <x>10</x>
          <y>10</y>
          <width>161</width>
-         <height>651</height>
+         <height>671</height>
         </rect>
        </property>
        <property name="currentIndex">
@@ -560,7 +560,7 @@
           </font>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="ECPmaster">
           <attribute name="title">
@@ -2836,7 +2836,7 @@ and display</string>
           </font>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -4365,40 +4365,40 @@ and display</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_rotation_calculated">
          <property name="geometry">
           <rect>
-           <x>840</x>
-           <y>310</y>
+           <x>920</x>
+           <y>300</y>
            <width>62</width>
            <height>22</height>
           </rect>
          </property>
          <property name="minimum">
-          <double>-360.000000000000000</double>
+          <double>-10000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>360.000000000000000</double>
+          <double>10000000.000000000000000</double>
          </property>
         </widget>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_tilt_calculated">
          <property name="geometry">
           <rect>
-           <x>910</x>
-           <y>310</y>
+           <x>920</x>
+           <y>330</y>
            <width>62</width>
            <height>22</height>
           </rect>
          </property>
          <property name="minimum">
-          <double>-360.000000000000000</double>
+          <double>-10000000.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>360.000000000000000</double>
+          <double>10000000.000000000000000</double>
          </property>
         </widget>
         <widget class="QLabel" name="label_131">
          <property name="geometry">
           <rect>
-           <x>910</x>
-           <y>290</y>
+           <x>830</x>
+           <y>330</y>
            <width>51</width>
            <height>21</height>
           </rect>
@@ -4416,8 +4416,8 @@ and display</string>
         <widget class="QLabel" name="label_132">
          <property name="geometry">
           <rect>
-           <x>840</x>
-           <y>290</y>
+           <x>830</x>
+           <y>300</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -4436,8 +4436,8 @@ and display</string>
          <property name="geometry">
           <rect>
            <x>870</x>
-           <y>280</y>
-           <width>61</width>
+           <y>270</y>
+           <width>81</width>
            <height>21</height>
           </rect>
          </property>
@@ -4457,7 +4457,7 @@ and display</string>
          <property name="geometry">
           <rect>
            <x>840</x>
-           <y>340</y>
+           <y>440</y>
            <width>131</width>
            <height>41</height>
           </rect>
@@ -4473,6 +4473,117 @@ and display</string>
 stage orientation</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="pushButton_display_for_stage_rot_tilt_restore">
+         <property name="geometry">
+          <rect>
+           <x>840</x>
+           <y>490</y>
+           <width>131</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Restore
+stage orientation</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_134">
+         <property name="geometry">
+          <rect>
+           <x>880</x>
+           <y>360</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Total</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_135">
+         <property name="geometry">
+          <rect>
+           <x>830</x>
+           <y>380</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>stage rotation</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_rotation_calculated_total">
+         <property name="geometry">
+          <rect>
+           <x>920</x>
+           <y>380</y>
+           <width>62</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <double>-10000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000000.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_136">
+         <property name="geometry">
+          <rect>
+           <x>830</x>
+           <y>410</y>
+           <width>51</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>stage tilt</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_stage_tilt_calculated_total">
+         <property name="geometry">
+          <rect>
+           <x>920</x>
+           <y>410</y>
+           <width>62</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <double>-10000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10000000.000000000000000</double>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_messages">
@@ -4480,8 +4591,8 @@ stage orientation</string>
         <rect>
          <x>190</x>
          <y>610</y>
-         <width>791</width>
-         <height>51</height>
+         <width>981</width>
+         <height>71</height>
         </rect>
        </property>
        <property name="font">
@@ -4529,7 +4640,7 @@ stage orientation</string>
      <x>0</x>
      <y>0</y>
      <width>1229</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

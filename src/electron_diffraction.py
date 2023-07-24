@@ -196,7 +196,6 @@ class Kikuchi():
                                    prop=properties)
             self.xmap.scan_unit = "um"
 
-
             ckey_au = plot.IPFColorKeyTSL(
                 self.xmap.phases["austenite"].point_group, direction=Vector3d.zvector() )
             rgb_au = ckey_au.orientation2color(self.xmap["austenite"].orientations)
@@ -211,7 +210,6 @@ class Kikuchi():
             n_channels = 3
             for i in range(n_channels):
                 self.xmap_gb[:, :, i] *= rescaled_overlay
-
 
             print('sample xmap successfully loaded')
 
