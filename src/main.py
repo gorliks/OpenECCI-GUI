@@ -27,6 +27,9 @@ from orix.crystal_map import CrystalMap, Phase, PhaseList
 from orix.quaternion import Orientation, Rotation, symmetry
 from orix.vector import Vector3d, AxAngle, Miller
 
+from scipy.optimize import minimize
+
+
 
 
 
@@ -134,6 +137,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.pushButton_load_ref_ctf_file.clicked.connect(lambda: self._load_reference_ctf_file())
         self.pushButton_ref_ECP_display.clicked.connect(lambda: self.calculate_simulated_ECP_pattern())
         self.pushButton_run_automatic_calibration.clicked.connect(lambda: self.run_automatic_calibration())
+        self.pushButton_run_minimisation.clicked.connect(lambda: self.run_minimisation())
         #
         self.pushButton_open_file_ref_EBSD_measurement.clicked.connect(lambda: self._open_ref_EBSD_measurement_file())
         self.pushButton_set_ref_EBSD_detector.clicked.connect(lambda: self._update_ebsd_ref_settings())
@@ -806,7 +810,7 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
             self.measured_ref_EBSD = utils.load_image(file_name)
 
             try:
-                metadata = utils.HKL_metadata(file_name)
+                metadata = utils.get_HKL_metadata(file_name)
                 self.ebsd_reference.update_settings_from_dict(dict=metadata)
 
             except Exception as e:
@@ -1096,6 +1100,53 @@ class GUIMainWindow(gui_main.Ui_MainWindow, QtWidgets.QMainWindow):
         self.calibrated_tilt_x = tilt_x_max
         self.calibrated_tilt_y = tilt_y_max
         self.label_messages.setText('Calibration completed')
+
+
+
+    def run_minimisation(self):
+        from scipy.optimize import minimize
+
+        self.repaint()
+        QtWidgets.QApplication.processEvents()
+
+        def get_fitting_factor(args):
+            tilt_y_corr, tilt_x_corr, pc_z = args
+
+            self.ecp_reference.update_settings(pc_z=pc_z)
+            simulated_ECP = \
+                self.ecp_reference.calculate_diffraction_pattern(tilt_x=tilt_x_corr,
+                                                                 tilt_y=tilt_y_corr)
+            fitting_factor = 1 - \
+                             utils.modal_assurance_criterion(
+                                 image1=self.measured_ref_ECP,
+                                 image2=simulated_ECP)
+
+            return fitting_factor
+
+        guess_values = [self.doubleSpinBox_tilt_y_calibrated.value(),
+                        self.doubleSpinBox_tilt_x_calibrated.value(),
+                        self.doubleSpinBox_ref_ECP_pc_z.value()]
+        result = minimize(get_fitting_factor, guess_values, method='Nelder-Mead', tol=1e-6)
+
+        result = result.x
+
+        print(result)
+
+        # update the calibrated tilt values at the end of the run
+        self.doubleSpinBox_tilt_y_calibrated.setValue(result[0])
+        self.doubleSpinBox_tilt_x_calibrated.setValue(result[1])
+        self.doubleSpinBox_ref_ECP_pc_z.setValue(result[2])
+        self.doubleSpinBox_tilt_y.setValue(result[0])
+        self.doubleSpinBox_tilt_x.setValue(result[1])
+        self.tilt_x = result[1]
+        self.tilt_y = result[0]
+
+        self.label_messages.setText(f'Calibration completed, {result}')
+
+        self.ecp_reference.update_settings(pc_z=result[2])
+
+        self.calculate_simulated_ECP_pattern(plot=True)
+
 
 
 

@@ -45,8 +45,10 @@ def normalise(image):
     image_norm = image / norm  # normalized matrix
     return image_norm
 
+
 def calculate_difference(image1, image2):
     return normalise(image1) - normalise(image2)
+
 
 def modal_assurance_criterion(image1, image2):
     """
@@ -90,130 +92,6 @@ def enhance_contrast(image, clipLimit=1.0, tileGridSize=8):
     image = clahe.apply(image)
     return image
 
-
-def equalise_histogram(image, bitdepth=8):
-    try:
-        _image = image.data
-    except:
-        _image = image
-
-    # _image = _image / _image.max()
-    # _image = (_image * 2 ** bitdepth).astype("uint8")
-
-    _image = cv2.equalizeHist(_image)
-    return _image
-
-
-def resize(image, size=(200,200)):
-    return cv2.resize(image, size)
-
-
-
-def _reformat_HKL_metadata(metadata):
-    output = {}
-    output['pc_x'] = float(metadata['pattern-center-x-pu'])
-    output['pc_y'] = float(metadata['pattern-center-y-pu'])
-    output['pc_z'] = float(metadata['detector-distance-pu'])
-    output['energy'] = float(metadata['sem-acc-voltage-kv'])
-    output['working_distance'] = float(metadata['sem-working-distance-mm'])
-    #
-    output['sample_tilt']      = float(metadata['specimen-tilt-deg'])
-    output['sample_tilt_axis'] = metadata['specimen-tilt-axis']
-    #
-    output['detector_tilt_Euler1'] = float(metadata['detector-orientation-euler1-deg'])
-    output['detector_tilt_Euler2'] = float(metadata['detector-orientation-euler2-deg'])
-    output['detector_tilt_Euler3'] = float(metadata['detector-orientation-euler3-deg'])
-    output['detector_tilt']        = float(metadata['detector-orientation-euler1-deg'])
-    #
-    output['lens-distortion']       = float(metadata['lens-distortion'])
-    output['lens-field-of-view-mm'] = float(metadata['lens-field-of-view-mm'])
-    #
-    output['detector-insertion-distance-mm'] = float(metadata['detector-insertion-distance-mm'])
-    output['beam-position-offset-x-um'] = float(metadata['beam-position-offset-x-um'])
-    output['beam-position-offset-y-um'] = float(metadata['beam-position-offset-y-um'])
-
-    return output
-
-
-def HKL_metadata(file_name, reformat='True'):
-    with tifffile.TiffFile(file_name) as tif:
-        tif_tags = {}
-        for tag in tif.pages[0].tags.values():
-            name, value = tag.name, tag.value
-            tif_tags[name] = value
-        #image = tif.pages[0].asarray()
-
-        raw_metadata = tif_tags['51122']
-        myroot = ET.fromstring(raw_metadata)
-
-        metadata = {myroot[0][i].tag: myroot[0][i].text for i in range(len(myroot[0]))}
-
-        if reformat:
-            try:
-                metadata = _reformat_HKL_metadata(metadata)
-            except Exception as e:
-                print(f'could not reformat the metadata, {e}')
-
-    return metadata
-
-
-class BlittedCursor:
-    """
-    A cross-hair cursor using blitting for faster redraw.
-    """
-
-    def __init__(self, ax):
-        self.ax = ax
-        self.background = None
-        self.horizontal_line = ax.axhline(color='y', lw=0.8, ls='--')
-        self.vertical_line = ax.axvline(color='y', lw=0.8, ls='--')
-        # text location in axes coordinates
-        self.text = ax.text(0.72, 0.9, '', transform=ax.transAxes)
-        self._creating_background = False
-        ax.figure.canvas.mpl_connect('draw_event', self.on_draw)
-
-    def on_draw(self, event):
-        self.create_new_background()
-
-    def set_cross_hair_visible(self, visible):
-        need_redraw = self.horizontal_line.get_visible() != visible
-        self.horizontal_line.set_visible(visible)
-        self.vertical_line.set_visible(visible)
-        self.text.set_visible(visible)
-        return need_redraw
-
-    def create_new_background(self):
-        if self._creating_background:
-            # discard calls triggered from within this function
-            return
-        self._creating_background = True
-        self.set_cross_hair_visible(False)
-        self.ax.figure.canvas.draw()
-        self.background = self.ax.figure.canvas.copy_from_bbox(self.ax.bbox)
-        self.set_cross_hair_visible(True)
-        self._creating_background = False
-
-    def on_mouse_move(self, event):
-        if self.background is None:
-            self.create_new_background()
-        if not event.inaxes:
-            need_redraw = self.set_cross_hair_visible(False)
-            if need_redraw:
-                self.ax.figure.canvas.restore_region(self.background)
-                self.ax.figure.canvas.blit(self.ax.bbox)
-        else:
-            self.set_cross_hair_visible(True)
-            # update the line positions
-            x, y = event.xdata, event.ydata
-            self.horizontal_line.set_ydata([y])
-            self.vertical_line.set_xdata([x])
-            #self.text.set_text('x=%1.2f, y=%1.2f' % (x, y))
-
-            self.ax.figure.canvas.restore_region(self.background)
-            self.ax.draw_artist(self.horizontal_line)
-            self.ax.draw_artist(self.vertical_line)
-            self.ax.draw_artist(self.text)
-            self.ax.figure.canvas.blit(self.ax.bbox)
 
 
 def apply_clahe(
@@ -282,21 +160,203 @@ def apply_clahe(
 
 
 
+def equalise_histogram(image, bitdepth=8):
+    try:
+        _image = image.data
+    except:
+        _image = image
+
+    # _image = _image / _image.max()
+    # _image = (_image * 2 ** bitdepth).astype("uint8")
+
+    _image = cv2.equalizeHist(_image)
+    return _image
+
+
+def resize(image, size=(200,200)):
+    return cv2.resize(image, size)
+
+
+
+def _reformat_HKL_metadata(metadata):
+    output = {}
+    output['pc_x'] = float(metadata['pattern-center-x-pu'])
+    output['pc_y'] = float(metadata['pattern-center-y-pu'])
+    output['pc_z'] = float(metadata['detector-distance-pu'])
+    output['energy'] = float(metadata['sem-acc-voltage-kv'])
+    output['working_distance'] = float(metadata['sem-working-distance-mm'])
+    #
+    output['sample_tilt']      = float(metadata['specimen-tilt-deg'])
+    output['sample_tilt_axis'] = metadata['specimen-tilt-axis']
+    #
+    output['detector_tilt_Euler1'] = float(metadata['detector-orientation-euler1-deg'])
+    output['detector_tilt_Euler2'] = float(metadata['detector-orientation-euler2-deg'])
+    output['detector_tilt_Euler3'] = float(metadata['detector-orientation-euler3-deg'])
+    output['detector_tilt']        = float(metadata['detector-orientation-euler1-deg'])
+    #
+    output['lens-distortion']       = float(metadata['lens-distortion'])
+    output['lens-field-of-view-mm'] = float(metadata['lens-field-of-view-mm'])
+    #
+    output['detector-insertion-distance-mm'] = float(metadata['detector-insertion-distance-mm'])
+    output['beam-position-offset-x-um'] = float(metadata['beam-position-offset-x-um'])
+    output['beam-position-offset-y-um'] = float(metadata['beam-position-offset-y-um'])
+
+    return output
+
+
+def get_HKL_metadata(file_name, reformat='False'):
+    with tifffile.TiffFile(file_name) as tif:
+        tif_tags = {}
+        for tag in tif.pages[0].tags.values():
+            name, value = tag.name, tag.value
+            tif_tags[name] = value
+        #image = tif.pages[0].asarray()
+
+        raw_metadata = tif_tags['51122']
+        myroot = ET.fromstring(raw_metadata)
+
+        metadata = {myroot[0][i].tag: myroot[0][i].text for i in range(len(myroot[0]))}
+
+        if reformat:
+            try:
+                metadata = _reformat_HKL_metadata(metadata)
+            except Exception as e:
+                print(f'could not reformat the metadata, {e}')
+
+    return metadata
+
+
+def get_stage_rotation_tilt_from_metadata(file_name, SEM_vendor="FEI"):
+    # TODO: auto detect the file vendor type from tiff tag
+    with tifffile.TiffFile(file_name) as tif:
+        if SEM_vendor == "FEI":
+            st_rot_angle = np.degrees(tif.fei_metadata['Stage']['StageR'])
+            st_tilt_angle = np.degrees(tif.fei_metadata['Stage']['StageT'])
+            resolution = [tif.fei_metadata["Image"]["ResolutionX"], tif.fei_metadata["Image"]["ResolutionY"]]
+        elif SEM_vendor == "Zeiss":
+            st_rot_angle = tif.sem_metadata['ap_stage_at_r'][1]
+            st_tilt_angle = tif.sem_metadata['ap_stage_at_t'][1]
+            resolution = [int(i) for i in tif.sem_metadata["dp_image_store"][1].split(" * ")]
+
+    return st_rot_angle, st_tilt_angle #, resolution
+
+
+def get_pattern_centre(file_name, EBSD_vendor='oxford', sample_pretilt=False):
+    if EBSD_vendor == "oxford":
+        # TODO: Need to confirm the "detector-orientation-euler2-deg" can be exported in rad
+        ebsp_metadata = get_HKL_metadata(file_name)
+
+        PCx = float(ebsp_metadata['pattern-center-x-pu'])
+        PCy = float(ebsp_metadata['pattern-center-y-pu'])
+        PCz = float(ebsp_metadata['detector-distance-pu'])
+
+        # angle between ebsd detector optical axis and electron beam direction
+        ebsd_detector_tilt = float(ebsp_metadata['detector-orientation-euler2-deg']) - 90
+        print(f'angle between EBSD detector optical axis and electron beam direction: {ebsd_detector_tilt} deg')
+
+        if sample_pretilt == True:
+            ebsd_sample_tilt = sample_pretilt_deg
+        else:
+            ebsd_sample_tilt = float(ebsp_metadata['specimen-tilt-deg'])
+        print(f'sample pretilt: {ebsd_sample_tilt}')
+
+        return PCx, PCy, PCz
+
+    else:
+        return 0, 0, 0
+
+
+class BlittedCursor:
+    """
+    A cross-hair cursor using blitting for faster redraw.
+    """
+
+    def __init__(self, ax):
+        self.ax = ax
+        self.background = None
+        self.horizontal_line = ax.axhline(color='y', lw=0.8, ls='--')
+        self.vertical_line = ax.axvline(color='y', lw=0.8, ls='--')
+        # text location in axes coordinates
+        self.text = ax.text(0.72, 0.9, '', transform=ax.transAxes)
+        self._creating_background = False
+        ax.figure.canvas.mpl_connect('draw_event', self.on_draw)
+
+    def on_draw(self, event):
+        self.create_new_background()
+
+    def set_cross_hair_visible(self, visible):
+        need_redraw = self.horizontal_line.get_visible() != visible
+        self.horizontal_line.set_visible(visible)
+        self.vertical_line.set_visible(visible)
+        self.text.set_visible(visible)
+        return need_redraw
+
+    def create_new_background(self):
+        if self._creating_background:
+            # discard calls triggered from within this function
+            return
+        self._creating_background = True
+        self.set_cross_hair_visible(False)
+        self.ax.figure.canvas.draw()
+        self.background = self.ax.figure.canvas.copy_from_bbox(self.ax.bbox)
+        self.set_cross_hair_visible(True)
+        self._creating_background = False
+
+    def on_mouse_move(self, event):
+        if self.background is None:
+            self.create_new_background()
+        if not event.inaxes:
+            need_redraw = self.set_cross_hair_visible(False)
+            if need_redraw:
+                self.ax.figure.canvas.restore_region(self.background)
+                self.ax.figure.canvas.blit(self.ax.bbox)
+        else:
+            self.set_cross_hair_visible(True)
+            # update the line positions
+            x, y = event.xdata, event.ydata
+            self.horizontal_line.set_ydata([y])
+            self.vertical_line.set_xdata([x])
+            #self.text.set_text('x=%1.2f, y=%1.2f' % (x, y))
+
+            self.ax.figure.canvas.restore_region(self.background)
+            self.ax.draw_artist(self.horizontal_line)
+            self.ax.draw_artist(self.vertical_line)
+            self.ax.draw_artist(self.text)
+            self.ax.figure.canvas.blit(self.ax.bbox)
+
+
 
 
 if __name__ == '__main__':
     data_dir = r'C:\Users\sergeyg\Github\OpenECCI\data'
     image_name = 'Si_ECP_001.tif'
 
-    file_name = os.path.join(data_dir, image_name)
+    ecp_file_name = os.path.join(data_dir, image_name)
 
-    image = load_image(file_name)
+    IMAGE = load_image(ecp_file_name)
+    stage_rotation, stage_tilt = get_stage_rotation_tilt_from_metadata(ecp_file_name)
+    print(f'stage rotation = {stage_rotation} deg; stage tilt {stage_tilt} deg')
 
-    image = image[0 : 884, :]
-
+    image = IMAGE[0 : 884, :]
     image_enhanced = apply_clahe(image)
+
+    ebsd_file_name = r'Si_pattern.tiff'
+    ebsd_file_name = os.path.join(data_dir, ebsd_file_name)
+    EBSD = load_image(ebsd_file_name)
+    ebsd_metadata = get_HKL_metadata(ebsd_file_name, reformat=False)
+    print(ebsd_metadata)
 
     plt.subplot(2,1,1)
     plt.imshow(image, cmap='gray')
     plt.subplot(2,1,2)
     plt.imshow(image_enhanced, cmap='gray')
+
+
+    # with tifffile.TiffFile(ecp_file_name) as tif:
+    #     tif_tags = {}
+    #     for tag in tif.pages[0].tags.values():
+    #         name, value = tag.name, tag.value
+    #         tif_tags[name] = value
+    #         print(name, value)
+    #     #print(tif_tags)
+    #     print(tif.fei_metadata)

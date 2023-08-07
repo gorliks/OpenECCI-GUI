@@ -375,7 +375,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="ECCI_reference">
         <attribute name="title">
@@ -549,7 +549,7 @@
           <rect>
            <x>330</x>
            <y>290</y>
-           <width>451</width>
+           <width>511</width>
            <height>241</height>
           </rect>
          </property>
@@ -1210,10 +1210,24 @@ ECP</string>
             <number>227</number>
            </property>
           </widget>
+          <widget class="QPushButton" name="pushButton_run_minimisation">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>170</y>
+             <width>91</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Run
+ minimisation</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
-           <string>Calibrate tilts</string>
+           <string>Calibrate tilts (scan)</string>
           </attribute>
           <widget class="QDoubleSpinBox" name="doubleSpinBox_tilt_x">
            <property name="geometry">
@@ -1607,7 +1621,7 @@ ECP</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_mac">
          <property name="geometry">
           <rect>
-           <x>820</x>
+           <x>850</x>
            <y>320</y>
            <width>81</width>
            <height>22</height>
@@ -1635,7 +1649,7 @@ ECP</string>
         <widget class="QLabel" name="label_66">
          <property name="geometry">
           <rect>
-           <x>820</x>
+           <x>850</x>
            <y>300</y>
            <width>71</width>
            <height>20</height>
@@ -1654,7 +1668,7 @@ ECP</string>
         <widget class="QDoubleSpinBox" name="doubleSpinBox_mac_max">
          <property name="geometry">
           <rect>
-           <x>820</x>
+           <x>850</x>
            <y>370</y>
            <width>81</width>
            <height>22</height>
@@ -1682,7 +1696,7 @@ ECP</string>
         <widget class="QLabel" name="label_128">
          <property name="geometry">
           <rect>
-           <x>820</x>
+           <x>850</x>
            <y>350</y>
            <width>81</width>
            <height>20</height>

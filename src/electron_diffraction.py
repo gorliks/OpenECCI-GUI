@@ -262,7 +262,8 @@ class Kikuchi():
                                         detector=self.detector,
                                         energy=self.energy,
                                         phase=self.master_pattern.phase,
-                                        compute=True)
+                                        compute=True,
+                                        show_progressbar=False)
             return np.squeeze(self.pattern.data)
         else:
             return( np.random.randint(0, 255, self.detector_shape) )
